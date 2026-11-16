@@ -1,0 +1,12 @@
+{
+  "name": "taith",
+  "version": "0.1.0",
+  "description": "One lead session that carries a task from research through design, a slice outline, a delegated build and review. Adapted from pstack, with a design conversation and one outline check added.",
+  "author": {
+    "name": "codey-byrne"
+  },
+  "homepage": "https://github.com/codey-byrne/taith",
+  "repository": "https://github.com/codey-byrne/taith",
+  "license": "MIT",
+  "keywords": ["workflow", "research", "design", "vertical-slices", "subagents", "herdr-core"]
+}
