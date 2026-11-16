@@ -1,0 +1,304 @@
+#!/usr/bin/env bash
+# taith-worker: the one place where taith skills start, wait on and clean up workers.
+#
+# The file runs/<name>/report.md is a worker's result. This script never
+# depends on a message from the worker to know that it finished.
+#
+# UNVERIFIED: every line that calls `hc` was written from the herdr-core
+# documentation on a machine without hc. The spikes in section 9 of the
+# adaptation plan must pass before the hc backend is relied on. The native
+# backend and the report-file wait are tested.
+set -euo pipefail
+
+usage() {
+  cat <<'EOF'
+Usage:
+  taith-worker spawn  --role <role> --name <worker> --planning <dir> --brief <file>
+                      [--worktree <path> --branch <branch> --base <ref>] [--model <model>]
+  taith-worker wait   --planning <dir> --name <worker> [--timeout <seconds>]
+  taith-worker status --planning <dir>
+  taith-worker reap   --planning <dir> [--into <branch>]
+
+Roles: implementer, pr-owner, loop-runner, vendor-reviewer.
+
+spawn   Creates the worktree when --worktree is given and it does not exist,
+        writes a permission allowlist from the brief's verify commands, records
+        the worker under <dir>/runs/<worker>/, and starts it under hc.
+        Without hc it prints "BACKEND: native" and starts nothing. The caller
+        then starts a native subagent in the worktree.
+wait    Returns when <dir>/runs/<worker>/report.md starts with a status line.
+        Prints that line. Exits 4 with "STATUS: TIMEOUT" after --timeout
+        seconds (default 3600). --timeout 0 checks once.
+status  Prints one line per worker: name, role, backend, status, minutes.
+reap    Closes finished hc workers. Lists each worktree as "remove" when it is
+        clean and merged into --into (default: the current branch), otherwise
+        as "keep" with the reason. It removes nothing.
+
+Environment:
+  TAITH_BACKEND=native   never use hc
+  TAITH_VENDOR_CMD       launch command for the vendor-reviewer role
+                         (default: "opencode run")
+EOF
+}
+
+die() { echo "taith-worker: $*" >&2; exit 2; }
+
+role="" name="" planning="" brief="" worktree="" branch="" base="" model="" timeout=3600 into=""
+
+parse_args() {
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      --role) role="${2:?}"; shift 2 ;;
+      --name) name="${2:?}"; shift 2 ;;
+      --planning) planning="${2:?}"; shift 2 ;;
+      --brief) brief="${2:?}"; shift 2 ;;
+      --worktree) worktree="${2:?}"; shift 2 ;;
+      --branch) branch="${2:?}"; shift 2 ;;
+      --base) base="${2:?}"; shift 2 ;;
+      --model) model="${2:?}"; shift 2 ;;
+      --timeout) timeout="${2:?}"; shift 2 ;;
+      --into) into="${2:?}"; shift 2 ;;
+      -h|--help) usage; exit 0 ;;
+      *) die "unknown argument: $1" ;;
+    esac
+  done
+}
+
+abspath() {
+  case "$1" in
+    /*) printf '%s\n' "$1" ;;
+    *) printf '%s/%s\n' "$PWD" "$1" ;;
+  esac
+}
+
+use_hc() {
+  [ "${TAITH_BACKEND:-}" != "native" ] && [ -n "${HC_TERMINAL_ID:-}" ] && command -v hc >/dev/null 2>&1
+}
+
+status_line() {
+  local report="$1"
+  [ -f "$report" ] || return 1
+  head -n 1 "$report" | grep -E '^STATUS: (DONE|ISSUES|BLOCKED)[[:space:]]*$'
+}
+
+meta_get() {
+  sed -n "s/^$2=//p" "$1" | head -n 1
+}
+
+# Prints the commands inside the first fenced block that follows a "Verify" heading or lead-in.
+verify_commands() {
+  awk '
+    /^(#+ *Verify|\*\*Verify)/ { armed = 1; next }
+    armed && /^```/ { if (inblock) exit; inblock = 1; next }
+    armed && inblock && NF { print }
+  ' "$1"
+}
+
+json_string() {
+  local s="$1"
+  s="${s//\\/\\\\}"
+  s="${s//\"/\\\"}"
+  printf '"%s"' "$s"
+}
+
+write_allowlist() {
+  local dir="$1" settings="$1/.claude/settings.local.json"
+  [ -e "$settings" ] && return 0
+  mkdir -p "$dir/.claude"
+  {
+    echo '{'
+    echo '  "permissions": {'
+    echo '    "allow": ['
+    echo '      "Edit",'
+    echo '      "Write",'
+    echo '      "Bash(git status:*)",'
+    echo '      "Bash(git diff:*)",'
+    echo '      "Bash(git log:*)",'
+    echo '      "Bash(git add:*)",'
+    printf '      "Bash(git commit:*)"'
+    while IFS= read -r cmd; do
+      printf ',\n      %s' "$(json_string "Bash($cmd)")"
+      printf ',\n      %s' "$(json_string "Bash($cmd:*)")"
+    done < <(verify_commands "$brief")
+    echo
+    echo '    ]'
+    echo '  }'
+    echo '}'
+  } > "$settings"
+  local exclude
+  exclude="$(git -C "$dir" rev-parse --git-common-dir)/info/exclude"
+  case "$exclude" in /*) ;; *) exclude="$dir/$exclude" ;; esac
+  mkdir -p "$(dirname "$exclude")"
+  grep -qxF '.claude/settings.local.json' "$exclude" 2>/dev/null || echo '.claude/settings.local.json' >> "$exclude"
+}
+
+ensure_worktree() {
+  [ -n "$worktree" ] || return 0
+  worktree="$(abspath "$worktree")"
+  if [ -d "$worktree" ]; then
+    git -C "$worktree" rev-parse --is-inside-work-tree >/dev/null 2>&1 || die "$worktree exists and is not a git worktree"
+    return 0
+  fi
+  [ -n "$branch" ] || die "--worktree needs --branch"
+  if git show-ref --verify --quiet "refs/heads/$branch"; then
+    git worktree add --quiet "$worktree" "$branch"
+  else
+    git worktree add --quiet -b "$branch" "$worktree" "${base:-HEAD}"
+  fi
+}
+
+hc_launch() {
+  local dir="$1" prompt="$2"
+  case "$role" in
+    vendor-reviewer)
+      # shellcheck disable=SC2086
+      hc run --bg --name "$name" --cwd "$dir" -- ${TAITH_VENDOR_CMD:-opencode run} "$prompt"
+      ;;
+    pr-owner|loop-runner)
+      hc run --bg --outlive-parent --name "$name" --cwd "$dir" -- \
+        claude --model "${model:-opus}" --permission-mode acceptEdits "$prompt"
+      ;;
+    *)
+      hc run --bg --name "$name" --cwd "$dir" -- \
+        claude --model "${model:-sonnet}" --permission-mode acceptEdits "$prompt"
+      ;;
+  esac
+}
+
+cmd_spawn() {
+  [ -n "$role" ] && [ -n "$name" ] && [ -n "$planning" ] && [ -n "$brief" ] || die "spawn needs --role, --name, --planning and --brief"
+  case "$role" in
+    implementer|pr-owner|loop-runner|vendor-reviewer) ;;
+    *) die "unknown role: $role" ;;
+  esac
+  case "$name" in *[!A-Za-z0-9._-]*) die "worker name may hold only letters, digits, dot, underscore and hyphen" ;; esac
+  planning="$(abspath "$planning")"
+  brief="$(abspath "$brief")"
+  [ -d "$planning" ] || die "no such planning directory: $planning"
+  [ -f "$brief" ] || die "no such brief: $brief"
+
+  local run="$planning/runs/$name"
+  [ -e "$run/meta" ] && die "worker $name already exists. A new job gets a new worker name"
+  ensure_worktree
+  local dir
+  dir="$(cd "${worktree:-$PWD}" && pwd)"
+  [ "$role" = "vendor-reviewer" ] || write_allowlist "$dir"
+
+  local backend=native
+  use_hc && backend=hc
+  mkdir -p "$run"
+  {
+    echo "role=$role"
+    echo "backend=$backend"
+    echo "brief=$brief"
+    echo "worktree=$dir"
+    echo "branch=${branch:-}"
+    echo "model=${model:-}"
+    echo "started=$(date +%s)"
+  } > "$run/meta"
+
+  local prompt
+  case "$role" in
+    implementer) prompt="/taith:build-slice $brief" ;;
+    pr-owner) prompt="/taith:own-pr $brief" ;;
+    loop-runner) prompt="/taith:run-loop $brief" ;;
+    vendor-reviewer) prompt="Read the brief at $brief and follow it. Write your report to $run/report.md. Change no other file." ;;
+  esac
+
+  if [ "$backend" = hc ]; then
+    hc_launch "$dir" "$prompt" >/dev/null
+  fi
+
+  echo "BACKEND: $backend"
+  echo "WORKER: $name"
+  echo "WORKTREE: $dir"
+  echo "BRIEF: $brief"
+  echo "REPORT: $run/report.md"
+}
+
+cmd_wait() {
+  [ -n "$planning" ] && [ -n "$name" ] || die "wait needs --planning and --name"
+  planning="$(abspath "$planning")"
+  local run="$planning/runs/$name" report="$planning/runs/$name/report.md"
+  [ -f "$run/meta" ] || die "no such worker: $name"
+  local deadline=$(( $(date +%s) + timeout ))
+  while :; do
+    if status_line "$report"; then
+      echo "REPORT: $report"
+      return 0
+    fi
+    [ "$(date +%s)" -ge "$deadline" ] && break
+    sleep 5
+  done
+  echo "STATUS: TIMEOUT"
+  if [ -f "$report" ]; then
+    echo "REPORT: $report exists but its first line is not a status line"
+  else
+    echo "REPORT: none"
+  fi
+  if [ "$(meta_get "$run/meta" backend)" = hc ] && command -v hc >/dev/null 2>&1; then
+    echo "PANE: $(hc get "$name" 2>&1 | tr '\n' ' ' | cut -c1-300)"
+  fi
+  exit 4
+}
+
+cmd_status() {
+  [ -n "$planning" ] || die "status needs --planning"
+  planning="$(abspath "$planning")"
+  local now meta run w st started
+  now="$(date +%s)"
+  for meta in "$planning"/runs/*/meta; do
+    [ -f "$meta" ] || continue
+    run="$(dirname "$meta")"
+    w="$(basename "$run")"
+    st="$(status_line "$run/report.md" || true)"
+    started="$(meta_get "$meta" started)"
+    printf '%s\t%s\t%s\t%s\t%dm\n' "$w" "$(meta_get "$meta" role)" "$(meta_get "$meta" backend)" "${st:-RUNNING}" $(( (now - ${started:-$now}) / 60 ))
+  done
+}
+
+cmd_reap() {
+  [ -n "$planning" ] || die "reap needs --planning"
+  planning="$(abspath "$planning")"
+  local target="${into:-$(git symbolic-ref -q --short HEAD || echo HEAD)}"
+  local main_tree meta run w wt head
+  main_tree="$(git rev-parse --show-toplevel)"
+  for meta in "$planning"/runs/*/meta; do
+    [ -f "$meta" ] || continue
+    run="$(dirname "$meta")"
+    w="$(basename "$run")"
+    if ! status_line "$run/report.md" >/dev/null; then
+      echo "keep	$w	still running or no report"
+      continue
+    fi
+    if [ "$(meta_get "$meta" backend)" = hc ] && command -v hc >/dev/null 2>&1; then
+      hc close "$w" >/dev/null 2>&1 || true
+    fi
+    wt="$(meta_get "$meta" worktree)"
+    if [ ! -d "$wt" ] || [ "$wt" = "$main_tree" ]; then
+      continue
+    fi
+    if [ -n "$(git -C "$wt" status --porcelain)" ]; then
+      echo "keep	$w	$wt has uncommitted changes"
+      continue
+    fi
+    head="$(git -C "$wt" rev-parse HEAD)"
+    if git merge-base --is-ancestor "$head" "$target"; then
+      echo "remove	$w	git worktree remove $wt"
+    else
+      echo "keep	$w	$wt is not merged into $target"
+    fi
+  done
+}
+
+[ $# -gt 0 ] || { usage; exit 2; }
+verb="$1"; shift
+parse_args "$@"
+case "$verb" in
+  spawn) cmd_spawn ;;
+  wait) cmd_wait ;;
+  status) cmd_status ;;
+  reap) cmd_reap ;;
+  -h|--help|help) usage ;;
+  *) die "unknown verb: $verb" ;;
+esac
