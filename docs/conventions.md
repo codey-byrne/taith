@@ -150,17 +150,19 @@ When a person types `/taith:review`, the skill finds the base and the spec for i
 
 **Lanes.** Review lanes are read-only native subagents with `subagent_type: "Explore"`, which keeps `Bash` for git. Each lane gets the absolute path of any skill file it must read. A lane returns its findings in its reply. The session that runs the review writes the findings file, so the file has one writer.
 
-**Output.** The findings file follows the report contract above.
+**Output.** The findings file follows the report contract above. Its layout is in `skills/review/references/findings-file.md`, which the review PR adds.
 
 - `DONE` means no open blocker remains.
-- `ISSUES` means the file lists findings to fix. Each finding has a label, an axis, a `path:line`, one sentence, and a citation. Blockers come first. A finding that two axes share appears once.
-- `BLOCKED` means the review could not run, with the reason.
+- `ISSUES` means at least one blocker is open. The `## Fix` section lists what a fix worker must change. Each finding has an id, a label, a lane, a `where`, one sentence, a citation and a `done when` line.
+- `BLOCKED` means the review could not run, with the reason on line 2.
+
+The session that runs the review also decides each finding: fix, declined, or for the PR. `build` does no triage of its own. `open-pr` reads only the last round's file.
 
 The review also gives a summary of at most about 150 words: the status, the count of findings by label, whether the loop continues, and anything only the person can decide.
 
-**The loop.** Review owns the rule for when the loop ends, and `build` follows it. The loop ends at the first round with no open blocker, and never runs past the cap that the review skill sets. On `ISSUES` with the loop still open, `build` gives the findings file to a fresh implementer inside a consolidated brief, then calls review again on the new head with the next round number. When the cap is reached with blockers open, `build` stops, lists them for the person, and carries them into the PR description.
+**The loop.** Review owns the rule for when the loop ends, and `build` follows it. The loop ends at the first round with no open blocker, and never runs past the cap that the review skill sets. On `ISSUES` with the loop still open, `build` points a fresh implementer at the `## Fix` section of the findings file inside a consolidated brief, then calls review again on the new head with the next round number. When the cap is reached with blockers open, `build` stops, lists them for the person, and carries them into the PR description.
 
-**Quick tier.** The quick playbook calls the same skill and asks for its single-reviewer mode: one subagent that covers every axis in one prompt. The rubric lives in one place.
+**Quick tier.** The quick playbook calls the same skill and asks for its single-reviewer mode: one subagent that covers every lane in one prompt. The rubric lives in one place.
 
 **What review does not do.** It does not change code.
 
@@ -230,5 +232,5 @@ Core skills point at these by their agreed names. Each pointer resolves once the
 | `interrogate`, `swarm`, `unslop`, `technical-writing`, `show-me-your-work`, `benchmark-checklist`, `figure-it-out` | `lead` |
 | `own-pr`, `run-loop` and the program playbook | `lead` names the Program tier and points at `playbooks/program.md` |
 | The other playbooks | Each PR that adds a playbook also adds its line to the list in `skills/lead/SKILL.md` |
-| `comment-sicko`, `delegate` agents | `review`, `lead` |
+| `delegate` agent | `lead` |
 | `setup` | the role sheet |
