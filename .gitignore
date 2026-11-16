@@ -28,8 +28,8 @@ venv/
 *.local.json
 
 # Build outputs
-dist/
-build/
+/dist/
+/build/
 
 # Logs
 *.log
