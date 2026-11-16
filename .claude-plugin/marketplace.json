@@ -1,0 +1,13 @@
+{
+  "name": "taith",
+  "owner": {
+    "name": "codey-byrne"
+  },
+  "plugins": [
+    {
+      "name": "taith",
+      "source": "./",
+      "description": "One lead session that carries a task from research through design, a slice outline, a delegated build and review."
+    }
+  ]
+}
