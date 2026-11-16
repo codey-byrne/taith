@@ -68,12 +68,14 @@ Start every lane in one message.
 | Spec | `spec-prompt.md` | `Agent`, `subagent_type: "Explore"`, the `review axis` role |
 | Standards | `standards-prompt.md` | the same |
 | Structure | `structure-prompt.md` | the same |
-| Comments | `comments-prompt.md` | `Agent`, `subagent_type: "taith:comment-sicko"` |
+| Comments | `comments-prompt.md` | `Agent`, `subagent_type: "taith:comment-sicko"`, the `comment reviewer` role |
 | Defects | `defects-brief.md` | the cross-vendor seat, below |
 
-**The cross-vendor seat.** The Defects lane goes to a model from another vendor, because a second model family catches what the first one reads past. Write the filled brief to a file beside the findings file, or to a temporary file when there is no findings file. Start the seat with `scripts/taith-worker spawn` and the `vendor-reviewer` role, then `wait` on it. The seat's findings are the body of its `report.md`.
+**The cross-vendor seat.** The Defects lane goes to a model from another vendor, because a second model family catches what the first one reads past. In a loop, write the filled brief to `runs/review-<round>/seat-brief.md` and name the worker `review-<round>-seat`, so its report lands at `runs/review-<round>-seat/report.md`. Start it with `scripts/taith-worker spawn --role vendor-reviewer`, then `wait` on it. Run the script with `--help` for the other arguments. The seat's findings are the body of its `report.md`.
 
-If the script prints `BACKEND: native`, or the seat fails to start, or `wait` times out, start an `Explore` subagent with the same brief. Record the lane as `same family` so the reader knows no second vendor read the change. Never hold the round for the seat.
+With no `.planning` folder the script has nowhere to record a worker, so skip the seat and use the native path below.
+
+If the script prints `BACKEND: native`, or the seat fails to start, or `wait` prints `STATUS: TIMEOUT`, start an `Explore` subagent with the same brief. Record the lane as `same family` so the reader knows no second vendor read the change. Never hold the round for the seat.
 
 ## 4. Check what came back
 
