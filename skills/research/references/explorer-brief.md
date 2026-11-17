@@ -22,7 +22,7 @@ Use the goal to judge what is relevant. Do not propose how to reach it.
 
 ## Write your full answer to a file
 
-Write the full answer to `{SECTION_FILE_ABSOLUTE_PATH}` and to no other path. Read the views reference at `{VIEWS_REFERENCE_ABSOLUTE_PATH}` first, and use its views for current state only. Use no `diff` blocks and no `+` or `-` change markers.
+Write the full answer to `{SECTION_FILE_ABSOLUTE_PATH}` and to no other path. Read the show-me skill at `{SHOW_ME_SKILL_ABSOLUTE_PATH}` first, and use its views for current state only. Use no `diff` blocks and no `+` or `-` change markers.
 
 Answer the question, not the whole subsystem. Shape the file like this.
 
@@ -43,7 +43,9 @@ structure faster than prose.}
 ### How it is tested
 
 {Test file locations, the approach (unit, integration, end to end), mocking
-patterns, fixtures. If there are no tests, say so.}
+patterns, fixtures. If there are no tests, say so. Say which tests you read
+and which you ran. A claim that a check passes carries the command and what it
+printed.}
 
 ### Conflicts with the task
 

@@ -30,12 +30,14 @@ When the person supplies a document or a link, study it for constraints and earl
 
 Write `design.md` from `references/design-template.md` with the Problem section drafted and the rest empty. Keep it minimal, so that the first question reaches the person fast.
 
+A choice the person already made in the task or in this conversation goes straight into Decisions. Do not ask it again.
+
 ## How the conversation works
 
 These rules hold for every question in steps 3 and 5.
 
 - **Ask preference calls only.** Before you ask anything, classify it.
-  - A fact about the code, the history or the docs goes to a lookup through the **how** skill (`../how/SKILL.md`). Fire it in the background and carry on with questions that do not depend on it.
+  - A fact about the code, the history or the docs goes to a lookup through the **how** skill (`../how/SKILL.md`). Fire it in the background and carry on with questions that do not depend on it. When a decision rests on the answer, state the fact in `design.md` with its citation, because `research.md` does not hold it.
   - A fork that a run could settle (behaviour, timing, layout, performance) goes to a prototype. The result decides.
   - A low-stakes choice joins a batch of recommended defaults. Present the batch once. The person accepts it or overrides single lines.
   - A product or preference call that no run can settle is a question for the person.
@@ -44,7 +46,8 @@ These rules hold for every question in steps 3 and 5.
 - **Discuss before you write.** The person may push back, think aloud or ask a question of their own. That is discussion, not a decision. Answer it and leave the document alone. Write only when the decision is resolved.
 - **Rewrite, never append.** Fold each resolved decision into the section it changes. Redraw the diagram. Remove what it made untrue. `design.md` always reads as a design someone wrote on purpose, never as a log of answers.
 - **Record what lost.** Each decision in the Decisions section names the options that were rejected and why, in one line each.
-- **Show the shape.** Use the views in `references/views.md` in place of paragraphs. A program design question with no code block is the rare exception. For a UI decision, write an HTML mock and show the options side by side.
+- **Show the shape.** Use the views in the **show-me** skill (`../show-me/SKILL.md`) in place of paragraphs. Show today's shape and the proposed one, as a `diff` block where the surrounding shape already exists. Give each option its own block. A program design question with no code block is the rare exception.
+- **Mock a UI decision.** Write one HTML file per decision in `.planning/<feature>/`, with the options side by side, in the product's own colours and components as research recorded them. Link it from `design.md` beside the text it supports. Update the mock when a later decision changes what it shows.
 - **Headings state the finding.** Write "Sync runs as a background job after the write commits", not "Sync".
 
 ## 3. Behaviour questions
@@ -71,9 +74,13 @@ Show the recommended design: the shape, what was rejected and why. Then ask only
 
 When the person rejects the shape itself, treat that as new grounding. Run architect again with the objection as a constraint.
 
+When a technical choice changes what the person will see or what is in scope, say so and ask. Then rewrite Desired end state, Not doing and any mock it touches. The behaviour sections never lag behind the shape.
+
 ## 6. Finish
 
 `design.md` ends with no open question. A parked item is recorded as parked, with what would unblock it. Set `status: settled`.
+
+Then edit the document once as a reader. Check it against the **show-me** skill and the writing rules in `../../docs/conventions.md`. Cut each sentence and section that the outline or an implementer would not use. Replace a dense paragraph with the smallest view that makes its point. Check that each heading states a finding and that each view sits beside its text.
 
 Ask the person to read the System design and Program design sections top to bottom, because they have seen them only one decision at a time. Then run the **outline** skill (`../outline/SKILL.md`) in this session.
 

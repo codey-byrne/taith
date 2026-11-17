@@ -203,20 +203,22 @@ Text copied from a source repo keeps the source author's style.
 | --- | --- | --- |
 | `lead` | hybrid | pstack `poteto-mode`, riptide's workflow tiers, plan sections 4.2 and 4.8 |
 | `lead` playbooks `quick`, `feature` | hybrid | pstack `feature` playbook, Codey's pipeline, riptide tiers |
-| `research` | hybrid | Codey's `research`, riptide `create-research-questions` and `create-research` |
+| `research` | hybrid | Codey's `research`, humanlayer `rpi` `create-research-questions` and `create-research` |
 | `how` | hybrid | pstack `how`, the lookup contract in plan section 4.8 |
 | `why` | kept | pstack `why` |
-| `design` | hybrid | Codey's `design`, riptide `create-design-discussion`, `create-prd`, `create-tdd` |
-| `design/references/views.md` | adapted | riptide `show-me` and the views in `create-tdd` and `create-research` |
-| `architect` | hybrid | pstack `architect`, Codey's design-it-twice runner constraints |
+| `design` | hybrid | Codey's `design`, humanlayer `rpi` `create-design-discussion`, `create-prd`, `create-tdd` |
+| `show-me` | adapted | humanlayer `show-me`, and the contract and dependency-map views in `rpi` `create-tdd` |
+| `architect` | hybrid | pstack `architect`, Codey's design-it-twice runner constraints, the views humanlayer `rpi` `create-tdd` asks for |
 | `codebase-designing` | adapted | Codey's `codebase-designing`, pstack `architect`'s design red flags |
-| `outline` | hybrid | Codey's `structure`, riptide `create-structure-outline`, pstack's throughput checkpoint |
+| `outline` | hybrid | Codey's `structure`, humanlayer `rpi` `create-structure-outline`, pstack's throughput checkpoint |
 | `build` | hybrid | Codey's `implement`, riptide `implement-outline`, pstack `feature` step 4 and `orchestrate` |
 | `build-slice` | hybrid | riptide `outline-implementer-agent`, pstack `poteto-agent`, Codey's implementer template |
 | `principle-*` (24) | kept | pstack |
-| `explorer` | hybrid | riptide `codebase-locator`, `codebase-analyzer`, `codebase-pattern-finder`, pstack's how explorer |
-| `web-researcher` | kept | riptide `web-search-researcher` |
+| `explorer` | hybrid | humanlayer `rpi` `codebase-locator`, `codebase-analyzer`, `codebase-pattern-finder`, pstack's how explorer |
+| `web-researcher` | kept | humanlayer `rpi` `web-search-researcher`, with taith's name, description and tool list |
 | `slice-checker` | new | plan section 4.2 step 5 |
+
+"humanlayer" in this table is [humanlayer/skills](https://github.com/humanlayer/skills), MIT, version 1.1.0 of its `rpi` plugin. "riptide" is `riptide-skills`, an older copy of the same workflow that carries no licence file. Where both hold a file, taith follows humanlayer. The `lead` and `build` rows still say riptide because the core PR wrote them from the older copy and nobody has compared them with humanlayer yet.
 
 ## What the core PR leaves for later PRs
 

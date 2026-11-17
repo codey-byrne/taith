@@ -51,7 +51,7 @@ Shared state: <each file, table or branch that two slices both write, and how th
 
 ## Slice 1. <Behaviour the slice delivers>
 
-**Behaviour.** <What a caller or user can do when this slice lands that they could not do before.>
+**Behaviour.** <What a caller or user can do when this slice lands that they could not do before. Why it comes at this point, when Depends on does not show it.>
 
 **Seam.** <Where the acceptance tests cross, in codebase-designing terms. Which interface they exercise.>
 
@@ -65,7 +65,7 @@ Shared state: <each file, table or branch that two slices both write, and how th
 - `path/to/file.ts`
 - `path/to/file.test.ts`
 
-**Change outline.** <Optional. One or two views from the views reference, when a file-tree diff, a signature or a contract shows the slice faster than the lines above. Signatures only, never bodies.>
+**Change outline.** <Optional. One or two views from the show-me skill, when a file-tree diff, a signature or a contract shows the slice faster than the lines above. A short sentence before each view. Signatures only, never bodies.>
 
 **Verify.**
 
