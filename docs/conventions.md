@@ -251,11 +251,11 @@ The utilities PR adds these. A kept skill is copied from cursor-pstack's `pstack
 | --- | --- | --- |
 | `unslop`, `technical-writing`, `sharpen`, `bro`, `in-your-own-words`, `benchmark-checklist`, `correct`, `teach` | kept | pstack, unchanged |
 | `figure-it-out`, `recall`, `automate-me` | kept | pstack, with the wording changes above |
-| `show-me-your-work` | kept | pstack. The cross-model reviewer is the `vendor-reviewer` role, with the `trail reviewer` role as the fallback (decision 13) |
+| `show-me-your-work` | kept | pstack. The cross-model reviewer is the `vendor-reviewer` role, with the `trail reviewer` role as the fallback (decision 18) |
 | `statechart`, `create-formal-verification-skill`, `maintain-formal-verification-skill`, `create-verification-skill`, `maintain-verification-skill` | kept | pstack. `statechart/scripts` is unchanged, tests included |
-| `catchup` | adapted | pstack `ketchup`. Draws nothing and uses text sketches until its visuals are decided (decision 11) |
+| `catchup` | adapted | pstack `ketchup`. Draws nothing and uses text sketches until its visuals are decided (decision 16) |
 | `reflect` | adapted | pstack. Also reads the transcripts of the hc workers named in `.planning/<feature>/runs/` |
-| `setup` | hybrid | pstack `setup-pstack` for the roles, Codey's `initialise-docs` for the per-repo part with its scan removed (decision 12) |
+| `setup` | hybrid | pstack `setup-pstack` for the roles, Codey's `initialise-docs` for the per-repo part with its scan removed (decision 17) |
 | `help` | adapted | pstack `poteto-help`, rewritten for taith |
 | `improve-codebase-design` | adapted | Codey's. Step 3 runs `architect` and the decision questions in place of its own design-it-twice |
 
