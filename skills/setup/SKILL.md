@@ -39,7 +39,7 @@ The seat is a reviewer from another model family. `review` uses it for the defec
 
 Ask which harness the person has: opencode, Codex CLI, Pi, or none. For a harness, ask for the model it should run. Check that the command exists with `command -v`. If it does not, record nothing and say what is missing.
 
-`scripts/taith-worker` reads the launch command from the `TAITH_VENDOR_CMD` environment variable and defaults to `opencode run`. Show the person the line to add to their shell profile, such as `export TAITH_VENDOR_CMD='opencode run --model <provider/model>'`. Add it yourself only when they say so.
+The seat is recorded in two places, and both must name the same command. Step 5 writes a `vendor-reviewer` line to the roles file, which is how a skill knows the seat exists. `scripts/taith-worker` reads the launch command from the `TAITH_VENDOR_CMD` environment variable and defaults to `opencode run`. Show the person the line to add to their shell profile, such as `export TAITH_VENDOR_CMD='opencode run --model <provider/model>'`. Add it yourself only when they say so.
 
 With no harness, each skill that wants the seat falls back to a native subagent and says in its output that the read came from the same model family.
 
@@ -47,7 +47,7 @@ No recipe has been run under hc yet. Say so when you record one.
 
 ### 5. Write the file
 
-Write `~/.claude/rules/taith-roles.md` in the shape below. Write a line only for a role whose value differs from the sheet, so that a later change to the sheet still reaches the roles the person left alone. Overwrite the whole file on each run. If no role differs and no seat is recorded, delete the file.
+Write `~/.claude/rules/taith-roles.md` in the shape below. The `vendor-reviewer` line holds the launch command from step 4 in place of a model and effort. Write any other line only for a role whose value differs from the sheet, so that a later change to the sheet still reaches the roles the person left alone. Overwrite the whole file on each run. If no role differs and no seat is recorded, delete the file.
 
 ```markdown
 # taith roles

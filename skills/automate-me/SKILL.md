@@ -64,7 +64,7 @@ The **lead** skill (`../lead/SKILL.md`) shows the shape. Read it for granularity
 
 ### 4. Draft the skill
 
-Use Anthropic's `skill-creator` plugin (`/skill-creator:skill-creator`) to author the skill. If it is not installed, tell the user to install it from Anthropic's official plugin marketplace. Placement:
+Use Anthropic's `skill-creator` plugin (`/skill-creator:skill-creator`) to author the skill. If it is not installed, tell the user to install it with `/plugin install skill-creator@claude-plugins-official`. Placement:
 
 - Path: preserve an existing mode skill's category. For a new mode, use `.claude/skills/<handle>/<handle>-mode/SKILL.md` when the repo has an established personal category for that handle. Otherwise default to `.claude/skills/<handle>-mode/SKILL.md` in the project (or `~/.claude/skills/<handle>-mode/` if the user prefers a personal skill).
 - Handle: the user's first name or chosen identifier.

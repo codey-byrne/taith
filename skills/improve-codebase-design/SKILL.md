@@ -91,15 +91,16 @@ calls, one question per message, by the rules of the **grill** skill (`../grill/
 **how**. Put low-stakes choices in one batch of recommended defaults. Useful branches for a deepening are what sits
 behind the seam, which callers change, and which tests survive.
 
-The **domain-modelling** skill (`../domain-modelling/SKILL.md`) owns the durable writes as decisions settle: glossary
-terms and ADRs. A candidate the person rejects for a load-bearing reason is its "rejected alternatives" case. Recording
-it stops a later run of this skill from suggesting the same thing.
+As each decision settles, follow the **domain-modelling** skill (`../domain-modelling/SKILL.md`). It writes the
+glossary terms and the ADRs. When the person rejects a candidate for a reason that will still hold later, record it as
+a rejected alternative in an ADR. A later run of this skill reads the ADRs in step 1 and does not suggest it again.
 
 ### 5. Hand over
 
 Save the agreed shape, its numbered decisions and the rejected options to `.planning/<feature>/deepening.md`, where
-`<feature>` is a short kebab-case name for the deepening. Tell the person the path.
+`<feature>` is a short kebab-case name for the deepening. Mark each decision the person agreed to as binding. Tell the
+person the path.
 
 This skill changes no code. To build the deepening, the person runs `/taith:lead` with the deepening as the task and
-that file as its input. The design step reads a supplied document as settled constraints, so the lead does not ask the
-same questions again.
+that file as its input. The design step copies each constraint from a supplied document into `design.md` with its
+status, so the lead does not ask again about a decision marked binding.

@@ -24,7 +24,7 @@ Then collect the transcripts of the hc workers this conversation started. A work
 
 - Each worker has a folder at `.planning/<feature>/runs/<worker>/`. Its `meta` file names the worktree. Its `report.md` is the worker's result.
 - A worker's transcripts directory is `${CLAUDE_CONFIG_DIR:-$HOME/.claude}/projects/<slug>/` with `<slug>` built from the worktree path by the same rule. Take the newest `.jsonl` there.
-- Read only the worktrees named in this conversation's `runs/` folders. That keeps the workspace boundary above.
+- Read only the worktrees named in this conversation's `runs/` folders. Any other worktree's transcripts belong to another conversation.
 - A `vendor-reviewer` worker runs on another harness and leaves no Claude Code transcript. Pass its `report.md` instead.
 - A removed worktree keeps its transcripts directory. A missing one means the worker never started. Say so and carry on.
 
@@ -63,7 +63,7 @@ Never edit a skill under `plugins/cache/`. Before approval, show its destination
 Follow each approved row's Routing exactly:
 
 - Trivial existing-skill edit (a one-line bullet, a tightened sentence, a stale fact corrected): the parent does it directly.
-- Substantive existing-skill edit (a new section, a new pattern table, more than ~10 lines): hand to Anthropic's `skill-creator` plugin (`/skill-creator:skill-creator`) and run its draft / test / iterate loop. If it is not installed, tell the user to install it from Anthropic's official plugin marketplace, and apply nothing substantive by hand.
+- Substantive existing-skill edit (a new section, a new pattern table, more than ~10 lines): hand to Anthropic's `skill-creator` plugin (`/skill-creator:skill-creator`) and run its draft / test / iterate loop. If it is not installed, tell the user to install it with `/plugin install skill-creator@claude-plugins-official`, and apply nothing substantive by hand.
 - `tune description: <skill path>` (the skill exists but didn't trigger when it should have): hand to `skill-creator` and run its description-optimization loop.
 - `new skill via skill-creator: <kebab-name>`: hand creation to `skill-creator`. Do not invent the shape ad hoc.
 

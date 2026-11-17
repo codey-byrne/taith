@@ -107,7 +107,7 @@ Each skill is at `../<name>/SKILL.md`. If a folder in this table is missing from
 
 If a skill folder next to this one is missing from the table, read its frontmatter and route by its description. `build-slice`, `own-pr` and `run-loop` are worker skills. The lead starts them, and a person does not type them. The `principle-*` folders are covered below.
 
-Close calls.
+These skills are easy to confuse.
 
 - `/taith:how` explains what the code does. `/taith:why` explains the reasons. `/taith:research` runs several of both at once and saves the answers. `/taith:teach` runs one or both and explains the result plainly.
 - `/taith:design` decides what is built. `/taith:outline` decides how the work is cut and ordered, and makes no design decision.
@@ -116,7 +116,7 @@ Close calls.
 - `/taith:arena` gives every runner the same brief and merges the best parts. `/taith:swarm` splits work into slices and returns one report.
 - `/taith:recall` rebuilds context across recent chats. `/taith:catchup` covers only this chat since the person's last message.
 
-Not in taith.
+taith leaves out two things on purpose.
 
 - taith has no plan skill. The outline carries a one-page digest of the decisions, and the lead writes a short brief for each slice when it delegates.
 - taith ships no skill for writing skills. `/taith:reflect` and `/taith:automate-me` hand that to Anthropic's `skill-creator` plugin.

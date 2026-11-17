@@ -220,20 +220,20 @@ Text copied from a source repo keeps the source author's style.
 
 ## What the core PR leaves for later PRs
 
-Core skills point at these by their agreed names. Each pointer resolves once the PR that adds the skill lands.
+Core and utility skills point at these by their agreed names. Each pointer resolves once the PR that adds the skill lands.
 
 | Item | Pointed at from |
 | --- | --- |
 | `review` | `lead`, `build`, the feature playbook |
 | `open-pr` | `lead`, `build`, both playbooks |
-| `grill`, `domain-modelling` | `design` |
-| `arena` | `architect` |
+| `grill`, `domain-modelling` | `design`, `setup`, `improve-codebase-design` |
+| `arena` | `architect`, `improve-codebase-design` through `architect` |
 | `test-first`, `comments` | `build-slice`, the quick playbook |
-| `interrogate`, `swarm`, `unslop`, `technical-writing`, `show-me-your-work`, `benchmark-checklist`, `figure-it-out` | `lead` |
+| `interrogate`, `swarm` | `lead` |
 | `own-pr`, `run-loop` and the program playbook | `lead` names the Program tier and points at `playbooks/program.md` |
 | The other playbooks | Each PR that adds a playbook also adds its line to the list in `skills/lead/SKILL.md` |
 | `delegate` agent | `lead` |
-| `setup` | the role sheet |
+| Every planned skill in its routing table | `help`, which says a skill has not shipped when its folder is missing |
 
 ## Utility skills
 
@@ -243,7 +243,7 @@ The utilities PR adds these. A kept skill is copied from cursor-pstack's `pstack
 | --- | --- |
 | `.cursor/skills/`, `~/.cursor/skills/` | `.claude/skills/`, `~/.claude/skills/` |
 | the `agent-transcripts/` directory, `~/.cursor/projects/` | `${CLAUDE_CONFIG_DIR:-$HOME/.claude}/projects/<slug>/`, where `<slug>` is the workspace path with every character other than a letter or digit turned into "-" |
-| Cursor's built-in `create-skill` | Anthropic's `skill-creator` plugin, `/skill-creator:skill-creator` |
+| Cursor's built-in `create-skill` | Anthropic's `skill-creator` plugin from the `claude-plugins-official` marketplace, `/skill-creator:skill-creator` |
 | "pick each subagent's reasoning level and fast or standard speed" | the role sheet |
 | `Shell` (the tool) | `Bash` |
 
