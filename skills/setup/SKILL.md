@@ -26,14 +26,16 @@ Read the role sheet for the defaults. If `~/.claude/rules/taith-roles.md` exists
 
 ### 3. Ask for a budget
 
-Ask the person for a budget with `AskUserQuestion`, or plain text when it is absent. Offer these four labels, and name the current budget when the file records one. With no file, say that `large` is the role sheet as written.
+Ask the person for a budget with `AskUserQuestion`, or plain text when it is absent. Offer these four labels, and name the current budget when the file records one.
 
-- `unlimited`: every effort one step higher
-- `large`: the role sheet's efforts
-- `medium`: every effort one step lower
-- `small`: every effort two steps lower
+- `unlimited`: every role at `max`
+- `large`: every role at `xhigh`
+- `medium`: every role at `high`
+- `small`: every role at `medium`
 
-The steps are on the ladder `low`, `medium`, `high`, `xhigh`, `max`. A budget moves the effort of every native role in the sheet by the same number of steps, and stops at `low` and at `max`. So `small` puts the `explorer` role at `low` and the `review axis` role at `low`, and `unlimited` puts the `reflect reviewer` role at `xhigh`. A budget changes no model. On a run after the first, a line in the file that differs from the sheet moved by the recorded budget was set by hand. It keeps its value.
+Say that answering `sheet` keeps the effort the role sheet gives each role. With no file, that is the current state. `AskUserQuestion` takes at most four options, and the person can type `sheet` as their own answer.
+
+A budget sets the effort of every native role to the same level. It changes no model. On a run after the first, a line whose model differs from the sheet, or whose effort differs from the recorded budget's level, was set by hand. It keeps its value.
 
 ### 4. Show the roles and confirm
 
@@ -58,7 +60,7 @@ No recipe has been run under hc yet. Say so when you record one.
 
 ### 6. Write the file
 
-Write `~/.claude/rules/taith-roles.md` in the shape below. Write a `# budget` line with the chosen label. The `vendor-reviewer` line holds the launch command from step 5 in place of a model and effort. Write any other line only for a role whose value differs from the sheet, so that a later change to the sheet still reaches the roles the person left alone. Skills read only the file and the sheet, not the budget, so under any budget other than `large` the file has a line for every role the budget moved. Overwrite the whole file on each run. If the budget is `large`, no role differs and no seat is recorded, delete the file.
+Write `~/.claude/rules/taith-roles.md` in the shape below. Write a `# budget` line with the chosen label. The `vendor-reviewer` line holds the launch command from step 5 in place of a model and effort. Write any other line only for a role whose value differs from the sheet, so that a later change to the sheet still reaches the roles the person left alone. Skills read only the file and the sheet, not the budget, so under any budget other than `sheet` the file has a line for every role whose effort the budget changed. Overwrite the whole file on each run. If the budget is `sheet`, no role differs and no seat is recorded, delete the file.
 
 ```markdown
 # taith roles
@@ -66,7 +68,7 @@ Write `~/.claude/rules/taith-roles.md` in the shape below. Write a `# budget` li
 Overrides for the taith role sheet. One line per role, as `<role>: <model> @<effort>`.
 Delete a line to return that role to the sheet's default. Written by /taith:setup.
 
-# budget: large
+# budget: sheet
 explorer: haiku @low
 review axis: opus @high
 vendor-reviewer: opencode run --model <provider/model>
