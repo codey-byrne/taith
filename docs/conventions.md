@@ -234,10 +234,7 @@ Core skills point at these by their agreed names. Each pointer resolves once the
 | --- | --- |
 | `review` | `lead`, `build`, the feature playbook |
 | `open-pr` | `lead`, `build`, both playbooks |
-| `grill`, `domain-modelling` | `design` |
-| `arena` | `architect` |
-| `test-first`, `comments` | `build-slice`, the quick playbook |
-| `interrogate`, `swarm`, `unslop`, `technical-writing`, `show-me-your-work`, `benchmark-checklist`, `figure-it-out` | `lead` |
+| `unslop`, `technical-writing`, `show-me-your-work`, `benchmark-checklist`, `figure-it-out` | `lead` |
 | `own-pr`, `run-loop` and the program playbook | `lead` names the Program tier and points at `playbooks/program.md` |
 | The other playbooks | Each PR that adds a playbook also adds its line to the list in `skills/lead/SKILL.md` |
 | `delegate` agent | `lead` |

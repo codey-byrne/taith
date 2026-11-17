@@ -19,7 +19,7 @@ Every candidate gets the same prompt, so the prompt is the contract.
 
 ## Phase B: Fan out
 
-Spawn all N subagents in one message with the `Agent` tool and `subagent_type: "general-purpose"`. Each gets the task, the path to the shared grounding, its own output path, the absolute path of every skill file it must read, and instructions to produce the artifact and a short rationale naming the alternatives it considered and what it rejected.
+Spawn all N subagents in one message with the `Agent` tool. Take `subagent_type`, `model` and `effort` from the step 3 role's line in the role sheet. Each gets the task, the path to the shared grounding, its own output path, the absolute path of every skill file it must read, and instructions to produce the artifact and a short rationale naming the alternatives it considered and what it rejected.
 
 If a candidate produces no output, proceed with N-1 and note the dropout.
 

@@ -16,9 +16,9 @@ State the intent with the **in-your-own-words** skill (`../in-your-own-words/SKI
 
 ## Fan out
 
-Fill `references/adversary-brief.md` once with the scope and the intent. Every adversary gets the same brief.
+Fill the scope and the intent in `references/adversary-brief.md` once. Then fill `{REPO_PATH}`, `{REPRO_RULE}` and `{RESULT}` for each adversary.
 
-**Native adversaries.** Give each adversary its own git worktree at the scope's head, per Phase A step 4 of the **arena** skill (`../arena/SKILL.md`), and copy the scope's uncommitted changes into it. Spawn at least two in one message with the `Agent` tool, `subagent_type: "general-purpose"` and the `interrogate adversary` role in the role sheet (`../lead/references/roles.md`). If an adversary returns nothing, proceed without it and note the dropout.
+**Native adversaries.** Give each adversary its own git worktree at the scope's head, per Phase A step 4 of the **arena** skill (`../arena/SKILL.md`), and copy the scope's uncommitted changes into it. Spawn at least two in one message with the `Agent` tool. Take `subagent_type`, `model` and `effort` from the `interrogate adversary` line in the role sheet (`../lead/references/roles.md`). If an adversary returns nothing, proceed without it and note the dropout.
 
 **The cross-vendor seat.** One more adversary is a model from another vendor, because a second model family breaks what the first one reads past. Write the filled brief to a file and start the seat.
 
@@ -28,7 +28,7 @@ Fill `references/adversary-brief.md` once with the scope and the intent. Every a
 
 `<dir>` is the feature's `.planning/<feature>/` folder when there is one. Otherwise it is a scratch directory that you create first. Run `spawn` from the checkout that holds the scope, so the seat reads the same tree. Then run `taith-worker wait --planning <dir> --name interrogate-<slug>-seat --timeout 900`. The seat's findings are the body of its `report.md`.
 
-The seat is read-only and may be unable to write a repro file. The brief tells it to put the full text of each repro file in its report. You write that file and run its command in the Verify step.
+The seat reads the checkout that holds the scope, which is not its own. The brief tells it to write nothing in the repository and to put the full text of each repro file in its report. You write that file and run its command in the Verify step.
 
 If `spawn` prints `BACKEND: native`, or the seat fails to start, or `wait` prints `STATUS: TIMEOUT`, carry on with the native adversaries and say that no second vendor attacked the change. Never hold the verdict for the seat.
 

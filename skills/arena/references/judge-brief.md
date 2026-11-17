@@ -2,7 +2,7 @@
 
 Fill `{TASK}`, `{RUBRIC}`, `{CANDIDATES}` and `{REPORT_PATH}`. Change nothing else. Write the filled text to a file and pass that file to `taith-worker spawn` as the brief.
 
-The cross-vendor seat reads this brief in another harness, with no skills loaded, so it names every path in full and leans on nothing else. `{TASK}` is the prompt every candidate received, word for word. `{RUBRIC}` is the numbered criteria from Phase A. `{CANDIDATES}` is one line per candidate: a label such as `candidate-1` and the absolute path of its output. Do not say which runner or constraint produced which candidate. `{REPORT_PATH}` is the absolute path of the `report.md` that `spawn` printed.
+The cross-vendor seat reads this brief in another harness, with no skills loaded, so it names every path in full and leans on nothing else. `{TASK}` is the prompt every candidate received, word for word. `{RUBRIC}` is the numbered criteria from Phase A. `{CANDIDATES}` is one line per candidate: a label such as `candidate-1` and the absolute path of its output. Do not say which runner or constraint produced which candidate. `{REPORT_PATH}` is `<dir>/runs/arena-<slug>-judge/report.md` as an absolute path, where `<dir>` is the folder you pass to `spawn` in Phase C. Fill it before `spawn`, which needs the brief file to exist.
 
 ```
 You are judging candidate answers to one task. Several agents each produced a candidate without seeing the

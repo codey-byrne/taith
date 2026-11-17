@@ -1,18 +1,19 @@
 # Adversary brief
 
-Fill `{REPO_PATH}`, `{SCOPE}`, `{INTENT}` and `{RESULT}`. Change nothing else.
+Fill `{REPO_PATH}`, `{SCOPE}`, `{INTENT}`, `{REPRO_RULE}` and `{RESULT}`. Change nothing else. `{SCOPE}` and `{INTENT}` are the same for every adversary. The other three differ.
 
-Native adversaries and the cross-vendor seat get the same brief. The seat reads it in another harness, with no skills loaded, so it names every path in full and leans on nothing else.
+Native adversaries and the cross-vendor seat get the same text. The seat reads it in another harness, with no skills loaded, so it names every path in full and leans on nothing else.
 
 - `{REPO_PATH}` is the adversary's own worktree for a native adversary, and the checkout that holds the scope for the seat.
 - `{SCOPE}` is the exact command that prints the change, such as `git diff main...HEAD`, or the absolute path of the design or plan under attack.
 - `{INTENT}` is the restated intent, in two or three sentences.
-- `{RESULT}` is `Return your result as your reply.` for a native adversary. For the seat it is the "Write your result" paragraph below, with the absolute path of the `report.md` that `spawn` printed.
+- `{REPRO_RULE}` is `Write repro files in the repository's working copy. It is yours alone.` for a native adversary. For the seat it is `Write nothing inside the repository, because someone else is working in it. Write repro files in a temporary directory outside it, or pass the script to the interpreter inline.`
+- `{RESULT}` is `Return your result as your reply.` for a native adversary. For the seat it is the "Write your result" paragraph below, with `<dir>/runs/interrogate-<slug>-seat/report.md` as an absolute path, where `<dir>` is the folder you pass to `spawn`. Fill it before `spawn`, which needs the brief file to exist.
 
 ```
 Break this change. You are one of several adversaries, and each of you works alone.
 
-The repository is at {REPO_PATH}. Work there.
+The repository is at {REPO_PATH}. Run your commands there.
 
 The scope: {SCOPE}
 
@@ -22,10 +23,8 @@ What the change is meant to do:
 Prove each finding with a run against the real code, such as a failing test, a repro script, or command output
 that shows the wrong behavior. For a design or plan, run a prototype or probe the current tree.
 
-Commit nothing and install nothing. Write repro files in the repository's working copy when you can. If you
-cannot write there, write them outside the repository or pass the script to the interpreter inline. In every
-case, put the full text of each repro file in your result, with the path it must be written to, so that someone
-else can run your command again.
+Commit nothing and install nothing. {REPRO_RULE} In every case, put the full text of each repro file in your
+result, with the path it must be written to, so that someone else can run your command again.
 
 Report each finding in this shape.
 

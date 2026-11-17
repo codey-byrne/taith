@@ -35,8 +35,8 @@ When a test is hard to write at the agreed seam, because the setup is awkward or
 
 1. **Write the tests first.** In a slice these are the acceptance tests the brief names. For a bug it is the smallest test that would have caught the bug. Each test encodes the intended behaviour and does not mirror the current implementation.
 2. **Run them once before any production change.** Each must fail because the behaviour is missing. A test that passes, or fails on a typo or a broken import, is wrong. Correct it and run again. Keep the output.
-3. **Commit the tests alone.** Review compares this commit with the final tests, so a test weakened later shows up in the diff.
-4. **Implement until they pass.** Write direct, well-structured code and no more of it than the tests need. Do not add a feature that no test asks for. Run your tests as a batch, by name.
+3. **In a slice, commit the tests alone.** Review compares this commit with the final tests, so a test weakened later shows up in the diff. Outside a slice, commit the tests alone only when someone will compare them later. If a hook refuses the red commit, say so and commit the tests with the code.
+4. **Implement until they pass.** Write direct, well-structured code and no more of it than the tests need. Preserve the contracts of nearby code. Do not add a feature that no test asks for. Run your tests as a batch, by name.
 5. **Tidy once.** Remove duplication, fix names, extract private helpers behind the seam. Run the tests again. A tidy that needs a test changed is not a tidy. It is a design change, and it goes back to design or into your report as a deviation.
 
 There is no red, green, refactor loop per test. The outline already cut the work into vertical slices, and each slice's tests were agreed at the outline check.
