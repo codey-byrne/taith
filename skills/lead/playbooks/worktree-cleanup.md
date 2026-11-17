@@ -1,0 +1,19 @@
+### Worktree and simulator cleanup
+
+**You own what gets deleted. This is the one playbook that deletes the person's state with no code review to catch a slip, so the gates below are the review.**
+
+1. **Snapshot and audit.** Record `df -h /`. For each `.planning/<feature>/` folder, run `../../scripts/taith-worker reap --planning <dir> --into <branch>`. It closes finished workers and lists each worker worktree as `remove` or as `keep` with the reason. It removes nothing. Then read every other worktree from `git worktree list --porcelain`, never from a hand-typed path, since a hand-typed `myrepo-worktrees/x` misses one that lives somewhere else. For each one, collect its size, its age, whether its branch is merged into the PR base, its PR state, and the output of `git -C <path> status --porcelain --untracked-files=all --ignore-submodules=none`.
+2. **The script's verdict is advice, not permission.** The sessions still in use are the real artifact (the **principle-prove-it-works** skill). Get that set from the person and from `../../scripts/taith-worker status --planning <dir>`, and cross-check every candidate. The person's set wins over a `remove`.
+3. **Verify usage before deleting.** For anything you doubt, fan subagents out to read the transcripts and report whether the session is ongoing and which worktrees it touches (the **principle-guard-the-context-window** skill, since transcripts are bulk). A running session spawns arena and repro trees into sibling worktrees through its subagents, and those are in use even when the person never named them.
+4. **Pause on irreversible loss.** A clean worktree is recoverable from its branch. These are not, so show them and get a decision first.
+   - Tracked paths with uncommitted changes. Show `git -C <path> diff HEAD --ignore-submodules=none --submodule=log`. An empty diff never means there is no work at stake. A diff leaves out every untracked file, and a plain `git diff` can leave out a submodule.
+   - Untracked files. Name them.
+   - Ignored files outside build and cache directories, such as `.env` or `.claude/settings.local.json`, which may exist nowhere else. List them with `git -C <path> status --porcelain --ignored=matching`.
+   - Commits that no branch, tag, or remote reaches, such as work committed on a detached HEAD. They are among the entries `git -C <path> reflog` prints. Keep any with `git branch <name> <sha>`.
+   - A locked worktree. Another tool or agent locked it, and `git worktree list --porcelain` prints the reason. `git worktree remove` refuses a locked tree, so do not `rm -rf` around it.
+
+   Clean, merged and not in use proceeds. Everything in this list pauses, and so does anything in use.
+5. **Prune the confirmed set.** Per path, `git worktree remove --force <path>`. If the directory survives on ignored build artifacts, `rm -rf` it, then `git worktree prune`. Branch refs survive, so commits on the worktree's branch are kept. The worktree's HEAD reflog goes with it, and so do commits made inside a submodule. Confirm with `df -h /` and re-list.
+6. **Simulators and other reclaimers.** Simulators are usually the next-biggest win: `xcrun simctl --set testing delete all` (XCTestDevices clones), `xcrun simctl delete unavailable`, and `xcrun simctl runtime list` then `runtime delete <id>` for old runtimes. More when needed: Xcode `DerivedData` and `iOS DeviceSupport`, `${CLAUDE_CONFIG_DIR:-$HOME/.claude}/shell-snapshots/` and old transcripts under `${CLAUDE_CONFIG_DIR:-$HOME/.claude}/projects/` (keep the recent ones that the **recall** skill and Session pickup read), and package caches (pnpm, uv, brew, yarn). Clear only caches the person has not said to keep.
+
+**Reply:** `df -h /` before and after with space reclaimed, the worktrees pruned, and a one-line reason for each held back (in use by which session, or what uncommitted work).

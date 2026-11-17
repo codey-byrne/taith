@@ -1,0 +1,11 @@
+### Session pickup
+
+**You own the resume point. Read the prior trail, don't redo it.**
+
+1. **Read the files on disk first.** State lives in `.planning/<feature>/`. Read `resume.md` when a paused session left one, then the ticks in `outline.md`, then one line per worker from `../../scripts/taith-worker status --planning <dir>`. Read a worker's report only when its status line needs explaining. If the folder is missing or incomplete, say so, then locate the prior trail through a pushed branch or a transcript under Claude Code's per-project transcripts directory, `${CLAUDE_CONFIG_DIR:-$HOME/.claude}/projects/<encoded-cwd>/*.jsonl`. Do not glob across other directories under `projects/`. That crosses workspace boundaries and reads private chats from unrelated projects. For a transcript, read the last messages first, then scan back for the decision points. Parse a long transcript in a subagent and keep the reduced timeline (the **principle-guard-the-context-window** skill).
+2. **Reconstruct operational state.** The branch and worktrees, what already landed (`git log`, `git diff --stat` against the base), the open todos, the decisions made. Use the prior trail to recover progress. An agent's summary of what the person decided is not the person's ruling. Check it against `design.md` or the person's own words before you rely on it.
+3. **Diff done against pending.** Compare what shipped against what was planned, name the resume point, and do not re-run the prior repro or redo completed work. Recheck the claims that affect the remaining work without repeating completed investigations. Read the artifacts the resume note links, including any questions or checklists the person asked to keep.
+4. **Verify the inherited claims against the original goal on the real artifact** (the **principle-prove-it-works** skill). A passing prior self-report is not the proof.
+5. **Route the remaining work** to the matching playbook or step command, and pick the verdict: continue the execution, ship a finished recommendation, ratify or override a prior conclusion, or postmortem a failed run. A build resumes with `/taith:build`, which trusts the ticked slices. The pickup playbook ends here. The routed playbook owns the rest.
+
+**Reply:** where the prior session stopped, what you inherited and what you redid (ideally nothing), the resume point, and the outcome.
