@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 Catch the user up on what changed in this chat since the last message they wrote before `/taith:catchup`, and help them understand each change, not only where it stands. Then lay out every call waiting on them so they can make it from your reply alone. Notifications and subagent results are not their messages. Assume the user remembers their last message and nothing after it.
 
-Use [`/bro`](../bro/SKILL.md)'s voice, not its task: plain words, short sentences, no jargon, like one person catching up another. Say what changed for the user, not how you did it. Say "the tests pass", not "CI is green". Leave out hashes, file paths, commands, build numbers, and test counts unless the user needs one to act. Call each PR, branch, or agent by a name the user would know, not by a label you invented. If a fact needs context to make sense, give the context or leave the fact out.
+Use [`/taith:bro`](../bro/SKILL.md)'s voice, not its task: plain words, short sentences, no jargon, like one person catching up another. Say what changed for the user, not how you did it. Say "the tests pass", not "CI is green". Leave out hashes, file paths, commands, build numbers, and test counts unless the user needs one to act. Call each PR, branch, or agent by a name the user would know, not by a label you invented. If a fact needs context to make sense, give the context or leave the fact out.
 
 ## Gather what changed
 
@@ -36,13 +36,13 @@ For a call between options, give every option the work weighed, each with what i
 
 This skill draws no pictures yet. How it draws charts and diagrams is not decided, so every reply is plain text that reads the same in a terminal and in a chat window. Do not write a Mermaid block, render a chart, or generate an image.
 
-Use a text sketch where the source skill would draw. A sketch is a few indented lines or one chain of names joined by "then". Use one for a PR stack or a dependency chain with each PR's state, for a before and after of a fix, and for options side by side.
+Use a text sketch where the source skill would draw. A sketch is a few indented lines or one chain of names joined by "then". Use one for how a design or system works, for a PR stack or a dependency chain with each PR's state, for a before and after of a fix, and for options side by side.
 
 ```text
 Before: search reads every row, about 4 seconds
 After:  search reads the index, under 1 second
 ```
 
-Keep a sketch to six lines of at most eight words each. Write each label as plain words a person would say. Never sketch a status list, a list of action items, or items with nothing connecting them. Never give a fact twice. A Markdown table is allowed only for options compared on the same few points.
+Keep a sketch to six lines of at most eight words each. Write each label as plain words a person would say. Never sketch a status list, a list of action items, or items with nothing connecting them. Never give a fact twice. A Markdown table is not a sketch, even with before and after columns.
 
 Link each screenshot or video that the work produced, on the line it supports, and say in words what it shows. If a visible change has none, mark its summary line "No screenshot yet," and say there what changed on screen. Never invent a number, and never describe a screen you did not capture. Link only artifacts that exist.

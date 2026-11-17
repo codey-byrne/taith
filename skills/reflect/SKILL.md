@@ -1,6 +1,6 @@
 ---
 name: reflect
-description: Spawn three parallel review subagents over the active transcript and the transcripts of the hc workers it started, surface learnings, and route each to a concrete edit on an existing skill. Use when the user says reflect.
+description: Spawn three parallel review subagents over the active transcript and the transcripts of the workers it started, surface learnings, and route each to a concrete edit on an existing skill. Use when the user says reflect.
 disable-model-invocation: true
 ---
 
@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 Mine the current conversation for durable learnings, then route them into skill edits.
 
-Invoke when the user says "reflect" or "/reflect". Skip when the conversation is trivial, off-topic, or already covered by an existing skill the parent followed correctly. One-offs are not learnings.
+Invoke when the user says "reflect" or "/taith:reflect". Skip when the conversation is trivial, off-topic, or already covered by an existing skill the parent followed correctly. One-offs are not learnings.
 
 ## 1. Locate the transcripts
 
@@ -20,13 +20,12 @@ ls -t <transcripts>/*.jsonl <transcripts>/*/subagents/*.jsonl 2>/dev/null | head
 
 That covers the session (`<id>.jsonl`) and subagent (`<parent>/subagents/<child>.jsonl`) layouts. Take the session file that contains the conversation's opening user prompt: `grep -lF` a distinctive fragment of it across the candidates. The first lines of a transcript can be session metadata, so do not match on line 1 alone. If none matches, pass a tight digest of the session instead.
 
-Then collect the transcripts of the hc workers this conversation started. A worker is its own Claude Code session in its own worktree, so its transcript is not under the lead's directory.
+Then collect the transcripts of the workers this conversation started. Each worker has a folder at `.planning/<feature>/runs/<worker>/`. Its `meta` file names the backend, the brief and the worktree. Its `report.md` is the worker's result. Where the transcript is depends on the backend.
 
-- Each worker has a folder at `.planning/<feature>/runs/<worker>/`. Its `meta` file names the worktree. Its `report.md` is the worker's result.
-- A worker's transcripts directory is `${CLAUDE_CONFIG_DIR:-$HOME/.claude}/projects/<slug>/` with `<slug>` built from the worktree path by the same rule. Take the newest `.jsonl` there.
-- Read only the worktrees named in this conversation's `runs/` folders. Any other worktree's transcripts belong to another conversation.
+- `backend=native`. The lead started the worker as an `Agent` subagent, so its transcript is one of the lead's `<session>/subagents/*.jsonl` files that the `ls` above lists. Take the one that contains the brief's absolute path from `meta`: `grep -lF` it across those files.
+- `backend=hc`. The worker is its own Claude Code session in its own worktree. Its transcripts directory is `${CLAUDE_CONFIG_DIR:-$HOME/.claude}/projects/<slug>/` with `<slug>` built from the worktree path by the same rule. Take the newest `.jsonl` there. A removed worktree keeps its transcripts directory. A missing one means the worker never started. Say so and carry on.
 - A `vendor-reviewer` worker runs on another harness and leaves no Claude Code transcript. Pass its `report.md` instead.
-- A removed worktree keeps its transcripts directory. A missing one means the worker never started. Say so and carry on.
+- Read only the workers named in this conversation's `runs/` folders. Any other worktree's transcripts belong to another conversation.
 
 Skip this when the conversation started no worker.
 
@@ -50,7 +49,7 @@ One `Agent` call, `subagent_type: "general-purpose"`, role `reflect synthesizer`
 
 ## 4. Structural enforcement check
 
-Move any Accepted item that a lint rule, script, metadata flag, or runtime check would enforce more reliably to Backlog. See the **encode-lessons-in-structure** principle skill.
+Move any Accepted item that a lint rule, script, metadata flag, or runtime check would enforce more reliably to Backlog. See the **encode-lessons-in-structure** principle skill (`../principle-encode-lessons-in-structure/SKILL.md`).
 
 ## 5. Apply
 

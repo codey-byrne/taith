@@ -22,32 +22,43 @@ List the names that the `Agent` tool's `model` parameter accepts in this session
 
 ### 2. Load the current choices
 
-Read the role sheet for the defaults. If `~/.claude/rules/taith-roles.md` exists, read it and treat its lines as the current choices. Drop a line whose role is not in the sheet, and tell the person which lines you dropped.
+Read the role sheet for the defaults. If `~/.claude/rules/taith-roles.md` exists, read it and treat its `# budget` line and its role lines as the current choices. Drop a line whose role is not in the sheet, and tell the person which lines you dropped.
 
-### 3. Show the roles and confirm
+### 3. Ask for a budget
 
-Show every native role with its model and effort, and mark each one that differs from the sheet. Ask whether to accept the table or change specific roles. Use `AskUserQuestion`, or plain text when it is absent.
+Ask the person for a budget with `AskUserQuestion`, or plain text when it is absent. Offer these four labels, and name the current budget when the file records one. With no file, say that `large` is the role sheet as written.
+
+- `unlimited`: every effort one step higher
+- `large`: the role sheet's efforts
+- `medium`: every effort one step lower
+- `small`: every effort two steps lower
+
+The steps are on the ladder `low`, `medium`, `high`, `xhigh`, `max`. A budget moves the effort of every native role in the sheet by the same number of steps, and stops at `low` and at `max`. So `small` puts the `explorer` role at `low` and the `review axis` role at `low`, and `unlimited` puts the `reflect reviewer` role at `xhigh`. A budget changes no model. On a run after the first, a line in the file that differs from the sheet moved by the recorded budget was set by hand. It keeps its value.
+
+### 4. Show the roles and confirm
+
+Show every native role with its model and effort after the budget, and mark each one that differs from the sheet. Ask whether to accept the table or change specific roles. Use `AskUserQuestion`, or plain text when it is absent.
 
 - A role takes one model and one effort level: `low`, `medium`, `high`, `xhigh` or `max`.
 - The value `session` runs the role on the session model. The `Agent` call then omits `model`.
 - Do not offer `implementer`, `native implementer`, `pr-owner` or `loop-runner`. The brief or the role sheet sets those per job.
 - If cost is the worry, say where the tokens go. Research explorers, the architect runners and the review lanes are the fan-outs. A cheaper model on those roles saves the most.
 
-### 4. Record the cross-vendor seat
+### 5. Record the cross-vendor seat
 
 The seat is a reviewer from another model family. `review` uses it for the defect read, `arena` uses it as the judge, and `show-me-your-work` uses it to review a decision trail. The recipes are in the role sheet.
 
 Ask which harness the person has: opencode, Codex CLI, Pi, or none. For a harness, ask for the model it should run. Check that the command exists with `command -v`. If it does not, record nothing and say what is missing.
 
-The seat is recorded in two places, and both must name the same command. Step 5 writes a `vendor-reviewer` line to the roles file, which is how a skill knows the seat exists. `scripts/taith-worker` reads the launch command from the `TAITH_VENDOR_CMD` environment variable and defaults to `opencode run`. Show the person the line to add to their shell profile, such as `export TAITH_VENDOR_CMD='opencode run --model <provider/model>'`. Add it yourself only when they say so.
+The seat is recorded in two places, and both must name the same command. Step 6 writes a `vendor-reviewer` line to the roles file, which is how a skill knows the seat exists. `scripts/taith-worker` reads the launch command from the `TAITH_VENDOR_CMD` environment variable and defaults to `opencode run`. Show the person the line to add to their shell profile, such as `export TAITH_VENDOR_CMD='opencode run --model <provider/model>'`. Add it yourself only when they say so.
 
 With no harness, each skill that wants the seat falls back to a native subagent and says in its output that the read came from the same model family.
 
 No recipe has been run under hc yet. Say so when you record one.
 
-### 5. Write the file
+### 6. Write the file
 
-Write `~/.claude/rules/taith-roles.md` in the shape below. The `vendor-reviewer` line holds the launch command from step 4 in place of a model and effort. Write any other line only for a role whose value differs from the sheet, so that a later change to the sheet still reaches the roles the person left alone. Overwrite the whole file on each run. If no role differs and no seat is recorded, delete the file.
+Write `~/.claude/rules/taith-roles.md` in the shape below. Write a `# budget` line with the chosen label. The `vendor-reviewer` line holds the launch command from step 5 in place of a model and effort. Write any other line only for a role whose value differs from the sheet, so that a later change to the sheet still reaches the roles the person left alone. Skills read only the file and the sheet, not the budget, so under any budget other than `large` the file has a line for every role the budget moved. Overwrite the whole file on each run. If the budget is `large`, no role differs and no seat is recorded, delete the file.
 
 ```markdown
 # taith roles
@@ -55,12 +66,13 @@ Write `~/.claude/rules/taith-roles.md` in the shape below. The `vendor-reviewer`
 Overrides for the taith role sheet. One line per role, as `<role>: <model> @<effort>`.
 Delete a line to return that role to the sheet's default. Written by /taith:setup.
 
+# budget: large
 explorer: haiku @low
 review axis: opus @high
 vendor-reviewer: opencode run --model <provider/model>
 ```
 
-### 6. Confirm
+### 7. Confirm
 
 Tell the person where the file is, which roles differ from the sheet, and that the file applies to new sessions.
 
