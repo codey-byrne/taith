@@ -105,6 +105,7 @@ Each task keeps its files under `.planning/<feature>/` in the checkout where the
     └── report.md          # the worker's result
 ```
 
+- In the Program tier each PR has its own folder, `.planning/<feature>/prs/<pr>/`, with its own `outline.md`, `owner-brief.md`, `slices/` and `runs/`. Its PR owner is the only writer of that folder.
 - Pass every `.planning` path to a worker as an absolute path. A worker in a git worktree has no `.planning` folder of its own.
 - A worker never commits anything under `.planning/`.
 - Each file has one writer. Two agents never write the same file.
@@ -217,6 +218,10 @@ Text copied from a source repo keeps the source author's style.
 | `explorer` | hybrid | riptide `codebase-locator`, `codebase-analyzer`, `codebase-pattern-finder`, pstack's how explorer |
 | `web-researcher` | kept | riptide `web-search-researcher` |
 | `slice-checker` | new | plan section 4.2 step 5 |
+| `open-pr` | hybrid | Codey's `open-pr`, humanlayer-skills `visual-pr` (the body layout and the change outline), riptide `ci-commit`, pstack `opening-a-pr` |
+| `own-pr` | adapted | pstack `orchestrate`, "one owner per PR" |
+| `run-loop` | adapted | pstack `babysit`, `shipping`, `hillclimb` and `autonomous-run`, as one launcher |
+| `delegate` | adapted | pstack `poteto-agent` |
 
 ## What the core PR leaves for later PRs
 
@@ -225,12 +230,12 @@ Core skills point at these by their agreed names. Each pointer resolves once the
 | Item | Pointed at from |
 | --- | --- |
 | `review` | `lead`, `build`, the feature playbook |
-| `open-pr` | `lead`, `build`, both playbooks |
 | `grill`, `domain-modelling` | `design` |
 | `arena` | `architect` |
 | `test-first`, `comments` | `build-slice`, the quick playbook |
 | `interrogate`, `swarm`, `unslop`, `technical-writing`, `show-me-your-work`, `benchmark-checklist`, `figure-it-out` | `lead` |
-| `own-pr`, `run-loop` and the program playbook | `lead` names the Program tier and points at `playbooks/program.md` |
+| The program playbook | `lead` names the Program tier and points at `playbooks/program.md`. `own-pr` points at it and at `playbooks/babysit.md`. `run-loop` points at the four loop playbooks |
 | The other playbooks | Each PR that adds a playbook also adds its line to the list in `skills/lead/SKILL.md` |
-| `delegate` agent | `lead` |
 | `setup` | the role sheet |
+| `show-me` | `open-pr` |
+| The `babysit`, `shipping`, `hillclimb` and `autonomous-run` playbooks | `own-pr`, `run-loop` |

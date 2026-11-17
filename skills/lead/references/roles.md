@@ -20,7 +20,8 @@ If the `Agent` tool rejects a model, omit `model` so the subagent runs on the se
 | slice checker | `taith:slice-checker` | sonnet | medium | `build` |
 | review axis | `Explore` | sonnet | high | `review` lanes and its recheck |
 | comment reviewer | `taith:comment-sicko` | sonnet | medium | `review` |
-| native implementer | `general-purpose` | as the brief says | high | `build`, when hc is absent |
+| native implementer | `taith:delegate` | as the brief says | high | `build`, when hc is absent |
+| delegate | `taith:delegate` | sonnet for a routine task, opus for a hard one | high | a code-writing or helper task from the lead, a PR owner or a loop runner |
 
 The lead, a coordinator, and design judging run on the strongest model available. That is the session model, so start the lead on it.
 
@@ -31,9 +32,11 @@ The lead, a coordinator, and design judging run on the strongest model available
 | Role | Launch prompt | Model | Permission mode | Lives for |
 | --- | --- | --- | --- | --- |
 | implementer | `/taith:build-slice <brief file>` | sonnet for a routine slice, opus for a hard one. The brief says which | `acceptEdits`, plus the allowlist the script writes from the brief's verify commands | one slice |
-| pr-owner | `/taith:own-pr <outline section>` | opus | as implementer | one PR, build to merge-ready |
-| loop-runner | `/taith:run-loop <playbook> <target>` | opus | as implementer | one babysit, hillclimb, shipping or autonomous run |
+| pr-owner | `/taith:own-pr <brief file>` | opus | as implementer | one PR, build to merge-ready |
+| loop-runner | `/taith:run-loop <brief file>` | opus | as implementer | one babysit, hillclimb, shipping or autonomous run |
 | vendor-reviewer | a plain-text prompt that names a brief file by absolute path | another vendor's model, from the recipes below | read-only | one review or one judging pass |
+
+A PR owner and a loop runner have no native fallback, because each must start its own subagents. Without hc the lead does the job itself, as the **own-pr** and **run-loop** skills say.
 
 The hc path is not verified. See `docs/conventions.md`.
 
