@@ -21,6 +21,10 @@ If the `Agent` tool rejects a model, omit `model` so the subagent runs on the se
 | review axis | `Explore` | sonnet | high | `review` lanes and its recheck |
 | comment reviewer | `taith:comment-sicko` | sonnet | medium | `review` |
 | native implementer | `general-purpose` | as the brief says | high | `build`, when hc is absent |
+| arena runner | `general-purpose` | opus | high | `arena`, when the caller names no role |
+| interrogate adversary | `general-purpose` | opus | high | `interrogate` |
+| swarm worker | `general-purpose` | sonnet | medium | `swarm` lanes that write |
+| swarm reader | `Explore` | sonnet | medium | `swarm` lanes that only read |
 
 The lead, a coordinator, and design judging run on the strongest model available. That is the session model, so start the lead on it.
 
@@ -33,7 +37,7 @@ The lead, a coordinator, and design judging run on the strongest model available
 | implementer | `/taith:build-slice <brief file>` | sonnet for a routine slice, opus for a hard one. The brief says which | `acceptEdits`, plus the allowlist the script writes from the brief's verify commands | one slice |
 | pr-owner | `/taith:own-pr <outline section>` | opus | as implementer | one PR, build to merge-ready |
 | loop-runner | `/taith:run-loop <playbook> <target>` | opus | as implementer | one babysit, hillclimb, shipping or autonomous run |
-| vendor-reviewer | a plain-text prompt that names a brief file by absolute path | another vendor's model, from the recipes below | read-only | one review or one judging pass |
+| vendor-reviewer | a plain-text prompt that names a brief file by absolute path | another vendor's model, from the recipes below | read-only | one review, one `arena` judging pass or one `interrogate` attack |
 
 The hc path is not verified. See `docs/conventions.md`.
 
