@@ -97,6 +97,8 @@ Each task keeps its files under `.planning/<feature>/` in the checkout where the
 ├── research.md            # the section files joined in question order
 ├── design.md              # lead writes. Numbered decisions, not-doing list, rejected options
 ├── outline.md             # lead writes. Digest, then slices
+├── resume.md              # a paused session writes. The next session reads it first
+├── prs/<pr>/              # Program tier. One outline and one owner brief per PR
 ├── slices/
 │   ├── N-brief.md         # lead writes just before it delegates slice N
 │   └── N-notes.md         # the slice N implementer writes at the end
@@ -217,6 +219,8 @@ Text copied from a source repo keeps the source author's style.
 | `explorer` | hybrid | riptide `codebase-locator`, `codebase-analyzer`, `codebase-pattern-finder`, pstack's how explorer |
 | `web-researcher` | kept | riptide `web-search-researcher` |
 | `slice-checker` | new | plan section 4.2 step 5 |
+| `lead` playbook `program` | hybrid | pstack `orchestrate`, `autopilot-full`, `autopilot-stack` and `multi-phase-plan` playbooks |
+| `lead` playbooks `refactoring`, `bug-fix`, `investigation`, `prototype`, `perf-issue`, `hillclimb`, `runtime-forensics`, `trace-forensics`, `visual-parity`, `eval`, `babysit`, `shipping`, `autonomous-run`, `session-pickup`, `pause-safely`, `worktree-cleanup`, `authoring-a-skill` | adapted | the pstack playbook of the same name. `bug-fix`, `session-pickup`, `pause-safely` and `worktree-cleanup` also take wording from the pstack Claude Code port |
 
 ## What the core PR leaves for later PRs
 

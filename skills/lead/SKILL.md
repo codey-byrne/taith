@@ -181,3 +181,21 @@ Match the task to a playbook and open `playbooks/<name>.md`.
 
 - **Quick.** One or two files with an obvious approach. File: `playbooks/quick.md`.
 - **Feature.** New or changed behaviour in one PR. The default. File: `playbooks/feature.md`.
+- **Program.** Several PRs. Two design sign-offs, then you coordinate one owner per PR and write no code. File: `playbooks/program.md`.
+- **Refactoring.** The structure changes and the behaviour does not. File: `playbooks/refactoring.md`.
+- **Bug fix.** Something is broken and has a repro, or needs one. File: `playbooks/bug-fix.md`.
+- **Investigation.** A read-only question that ends in a cited answer or a recommendation. File: `playbooks/investigation.md`.
+- **Prototype.** A design or empirical fork that a throwaway build can settle. File: `playbooks/prototype.md`.
+- **Perf issue.** A one-off performance fix tied to a measurement. File: `playbooks/perf-issue.md`.
+- **Hillclimb.** Sustained improvement of one metric against a target. A loop runner does it. File: `playbooks/hillclimb.md`.
+- **Runtime forensics.** Diagnose a live process by instrumenting it. File: `playbooks/runtime-forensics.md`.
+- **Trace forensics.** Diagnose from a capture that already exists. File: `playbooks/trace-forensics.md`.
+- **Visual parity.** A migration that must match a baseline pixel for pixel. File: `playbooks/visual-parity.md`.
+- **Eval.** A blinded comparison of a skill or prompt variant. File: `playbooks/eval.md`.
+- **Babysit.** Get an open PR or stack to merge-ready. File: `playbooks/babysit.md`.
+- **Shipping.** Verify a stack and hand the person its landing order. Nothing here merges. File: `playbooks/shipping.md`.
+- **Autonomous run.** Drive one task to a checkable exit condition without stopping. A loop runner does it. File: `playbooks/autonomous-run.md`.
+- **Session pickup.** Resume work that an earlier session left. File: `playbooks/session-pickup.md`.
+- **Pause safely.** The person asks you to stop, or your context is nearly full. File: `playbooks/pause-safely.md`.
+- **Worktree cleanup.** Reclaim disk from worktrees, simulators and caches. File: `playbooks/worktree-cleanup.md`.
+- **Authoring a skill.** Write or change a skill. File: `playbooks/authoring-a-skill.md`.
