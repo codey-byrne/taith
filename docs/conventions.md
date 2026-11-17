@@ -217,6 +217,14 @@ Text copied from a source repo keeps the source author's style.
 | `explorer` | hybrid | riptide `codebase-locator`, `codebase-analyzer`, `codebase-pattern-finder`, pstack's how explorer |
 | `web-researcher` | kept | riptide `web-search-researcher` |
 | `slice-checker` | new | plan section 4.2 step 5 |
+| `grill` | adapted | Codey's `grilling`, the batched defaults of plan section 4.2, riptide `create-design-discussion` (a question stays open until the person resolves it) |
+| `domain-modelling` | kept | Codey's `domain-modelling` |
+| `test-first` | hybrid | Codey's `tdd`, pstack `tdd`, plan section 4.4 |
+| `comments` | hybrid | Codey's `code-doc`, pstack `no-comments`, plan section 4.4b |
+| `arena` | adapted | pstack `arena` |
+| `interrogate` | adapted | pstack `interrogate` |
+| `swarm` | adapted | pstack `swarm` |
+| `blast-radius` | kept | pstack `blast-radius` |
 
 ## What the core PR leaves for later PRs
 

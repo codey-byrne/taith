@@ -80,6 +80,9 @@ Add `.planning/` to your `.gitignore`, or to `.git/info/exclude`, if you do not 
 | `skills/design/`, `skills/architect/`, `skills/codebase-designing/` | The design conversation, the shape step and the shared design vocabulary |
 | `skills/outline/` | Slices and the decision digest |
 | `skills/build/`, `skills/build-slice/` | The lead's build step and the worker that implements one slice |
+| `skills/grill/`, `skills/domain-modelling/` | How a question is put to you, and the glossary and ADRs written as decisions land |
+| `skills/test-first/`, `skills/comments/` | What every session that writes code follows for tests and comments |
+| `skills/arena/`, `skills/interrogate/`, `skills/swarm/`, `skills/blast-radius/` | Parallel candidates with a judge, adversaries that must prove a finding, plain fan-out, and what a change breaks elsewhere |
 | `skills/principle-*/` | pstack's 24 principles, unchanged |
 | `agents/` | The `explorer`, `web-researcher` and `slice-checker` subagents |
 | `scripts/taith-worker` | Starts, waits on and cleans up workers |
@@ -95,9 +98,9 @@ Skills name a role and never a model. [The role sheet](skills/lead/references/ro
 
 taith is assembled from three bodies of work.
 
-- **[pstack](https://github.com/cursor/plugins/tree/main/pstack)** by Lauren Tan. The lead that owns the design and delegates, the principles, `how`, `why` and `architect`, and the rule that every agent starts fresh with consolidated scope.
+- **[pstack](https://github.com/cursor/plugins/tree/main/pstack)** by Lauren Tan. The lead that owns the design and delegates, the principles, `how`, `why`, `architect`, `arena`, `interrogate`, `swarm` and `blast-radius`, and the rule that every agent starts fresh with consolidated scope.
 - **[humanlayer](https://github.com/humanlayer/humanlayer)**'s RPI workflow by Dex Horthy and the HumanLayer team. Research that describes and never recommends, the structure outline as the last check before code, vertical slices, the views used to show the shape of code, and the web researcher agent.
-- **[codey-byrne/skills](https://github.com/codey-byrne/skills)**, itself adapted from HumanLayer's workflow and from [Matt Pocock's skills](https://github.com/mattpocock/skills). The research, design, structure and implement pipeline, and `codebase-designing`.
+- **[codey-byrne/skills](https://github.com/codey-byrne/skills)**, itself adapted from HumanLayer's workflow and from [Matt Pocock's skills](https://github.com/mattpocock/skills). The research, design, structure and implement pipeline, `codebase-designing`, `domain-modelling`, and the sources of `grill`, `test-first` and `comments`.
 
 [docs/conventions.md](docs/conventions.md) lists the sources of each skill.
 
