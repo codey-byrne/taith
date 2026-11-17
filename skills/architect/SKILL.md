@@ -10,7 +10,7 @@ Sketch the shape of a change: the contracts between components, then the types, 
 
 The **design** skill calls this step. The bug-fix, perf-issue and refactoring playbooks call it when a fix crosses a function boundary. A person can type it alone.
 
-Read the **codebase-designing** skill (`../codebase-designing/SKILL.md`) first. Its terms are the language of every sketch and every comparison below.
+Read the **codebase-designing** skill (`../codebase-designing/SKILL.md`) first. Its terms are the language of every sketch and every comparison below. Read the **show-me** skill (`../show-me/SKILL.md`) for the views a design package is drawn with.
 
 ## Start
 
@@ -66,6 +66,11 @@ Write the caller's usage first and derive the type sketch from it.
 - For a small change, the output is one file of new types and signatures.
 - For larger work, the output is a module map and the type definitions.
 - The rationale follows `references/rationale-template.md`.
+
+Draw the package with the show-me views.
+
+- **Contracts between components.** A Mermaid diagram for each main flow. Endpoint and message shapes, and schemas in the project's own language or ORM. Show today's flow and the proposed one.
+- **Code shape.** A file-tree diff, signatures, a dependency map, and a call tree or component tree where control flow or UI structure is the point. Choose the views that expose a decision. The outline carries the full file list.
 
 Inside the design skill, fold the package into `design.md`: contracts into System design, code shape into Program design, and each choice with its rejected alternatives into Decisions. The rationale's open questions become the decision questions the design skill asks. Do not keep a second copy.
 

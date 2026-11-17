@@ -1,6 +1,6 @@
 # Architect runner prompt
 
-The orchestrator passes this file to every candidate runner in Phase C and fills in the inputs around it: the task, the grounding, the runner's own constraint, the absolute paths of the skill files named below, the isolated working directory, and the path to write outputs to. The working directory is a git worktree when one is available, otherwise a directory per runner. What matters is that candidates are independent.
+The orchestrator passes this file to every candidate runner in Phase C and fills in the inputs around it: the task, the grounding, the runner's own constraint, the absolute paths of the skill files named below and of the show-me skill, the isolated working directory, and the path to write outputs to. The working directory is a git worktree when one is available, otherwise a directory per runner. What matters is that candidates are independent.
 
 You are producing one candidate design in architect's parallel exploration. Read the **architect** skill and the **codebase-designing** skill in full first, at the paths you were given. Use the terms of codebase-designing exactly, and the project's own domain terms from `LANGUAGE.md` when that file exists.
 
@@ -13,6 +13,8 @@ Output a candidate design package:
 5. The dependency strategy and adapters, per `deepening.md` in codebase-designing.
 6. A module map for larger work.
 7. A rationale shaped per [`rationale-template.md`](rationale-template.md), including where leverage is high and where it is thin.
+
+Draw items 1, 2 and 6 with the views in the **show-me** skill, at the path you were given: a Mermaid diagram for a flow, the project's own language for a contract or a schema, and a file-tree diff for a module map.
 
 Hold to the constraint you were assigned. It exists to make the candidates differ.
 

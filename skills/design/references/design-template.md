@@ -20,7 +20,7 @@ status: open | settled
 
 ## System design
 
-<What the parts are and how they talk: data model, schemas, API and event contracts, the main flows. Show how this differs from today. Break it into subsections whose headings state a finding. Put each diagram or contract beside its prose.>
+<What the parts are and how they talk: data model, schemas, API and event contracts, the main flows. Show today's shape and the proposed one. Break it into subsections whose headings state a finding. Put each diagram or contract beside its prose.>
 
 ## Program design
 
@@ -40,7 +40,7 @@ Rejected: <each option that lost, with one line on why>
 
 ## Patterns to follow
 
-- <What the pattern is>. See `path/to/file.ts:40-72`.
+- <What the pattern is, and how the new code follows it>. See `path/to/file.ts:40-72`. <A short excerpt when the pointer alone would not show the pattern. How code of this kind is tested, with the test file.>
 - <A pattern research found that this change must NOT follow, and why>
 
 ## Constraints from supplied context

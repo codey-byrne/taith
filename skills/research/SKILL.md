@@ -24,15 +24,18 @@ If the task is ambiguous, ask the person the few questions needed to pin down wh
 
 ## 2. Write the questions
 
+You cannot ask a good question about code you cannot place. If the task names no file, module or service, send one or two lookups through the **how** skill (`../how/SKILL.md`) to find where the affected behaviour lives. Keep this pass small. The batch in step 3 does the investigation.
+
 Write `questions.md` from `references/questions-template.md`. A good question set would let a stranger design this change.
 
 - **Ask about what exists.** "How does session expiry work end to end?" "Where is tenancy enforced?" "What patterns exist for background jobs?" Never ask "how should we add X". A question that proposes a change gets a proposal back.
+- **Cover what the design will lean on.** The behaviour today, the data flow, the constraints, the edge cases, and what the libraries involved can do.
 - **Point the explorer at where to look** when you know. "In `packages/ui`, how does..." "How do the WorkOS docs say a user is updated?"
 - **Label each question** `how`, `why` or `web`. `how` asks what the code does. `why` asks for the history or the reason behind a shape. `web` asks about a library, an SDK or outside documentation.
 - **Match the count to the task.** Two questions at the least. Fewer than eight, except for the largest tasks.
 - **Copy the key pointers** into the Key pointers section, unchanged.
 - **Cover testing.** Ask how the affected components are tested today, unless another question already covers it.
-- **Cover the design system when the work may touch a UI.** Ask which component library and theme the product area uses, with its colours, type and spacing. Ask this even when the task does not mention the UI but may involve it.
+- **Cover the design system when the work may touch a UI.** Ask which component library and theme the product area uses, with its colours as hex codes, type, spacing, borders and shadows. Later mock-ups copy these. Ask this even when the task does not mention the UI but may involve it.
 
 Show the questions to the person in your reply. Do not wait for sign-off. Go to step 3 in the same turn.
 
@@ -41,7 +44,7 @@ Show the questions to the person in your reply. Do not wait for sign-off. Go to 
 Spawn every question in one message. Take `model` and `effort` from the role sheet (`../lead/references/roles.md`).
 
 - **A `how` question** gets one `taith:explorer` subagent on the `explorer` role. Build its prompt from `references/explorer-brief.md`.
-- **A `web` question** gets one `taith:web-researcher` subagent on the `web researcher` role. Give it the question, the key pointers, and the same output and reply rules as the brief. Tell it to include a link for every finding.
+- **A `web` question** gets one `taith:web-researcher` subagent on the `web researcher` role. Give it the question, the key pointers, and the same output and reply rules as the brief. Tell it to include a link for every finding. When the session has no web access, record the question as open in its section file with that reason, and carry on with the code and the local docs.
 - **A `why` question** runs through the **why** skill (`../why/SKILL.md`). Follow its section "When research calls this skill".
 
 Each explorer writes to its own file, `research/NN-<short-name>.md`, where `NN` is the question number with two digits. No two subagents write the same file.
@@ -55,6 +58,8 @@ Start nothing else while the batch runs.
 Read the summaries as they return. Each is short. Do not read the section files end to end.
 
 If a summary lists an open question that the design needs, run one more round of targeted questions, as lookups through the **how** skill (`../how/SKILL.md`) or as rewritten section files. Run at most one extra round. Whatever is still open after it stays in the file as an open question.
+
+When two summaries contradict each other, do not pick one. Send a lookup that names both claims with their citations, and have the explorer whose section was wrong rewrite it.
 
 ## 5. Join and check
 

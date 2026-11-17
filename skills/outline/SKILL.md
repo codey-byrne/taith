@@ -14,7 +14,7 @@ The outline makes no design decision. If cutting the work shows that one is miss
 
 Find `.planning/<feature>/`. Read `design.md`. If it lists an open question, stop and return to design. Slices cut around an open question get cut again when the answer lands.
 
-Read the **codebase-designing** skill (`../codebase-designing/SKILL.md`) for the terms used below, and `../design/references/views.md` for the views.
+Read the **codebase-designing** skill (`../codebase-designing/SKILL.md`) for the terms used below, and the **show-me** skill (`../show-me/SKILL.md`) for the views.
 
 You need the repo's test and verify commands. If research did not record them, send one lookup through the **how** skill (`../how/SKILL.md`): how to lint, typecheck, run one test by name, and run the full suite.
 
@@ -50,6 +50,7 @@ Rules for every slice:
 - **It can be verified the moment it lands.** Slice N never needs slice N+1 to be verified.
 - **Its acceptance tests are named**, with the seam they cross. The implementer writes exactly these tests first.
 - **A command verifies it wherever a command can.** Do not list a check by hand for something a script, a test or an existing skill could check. Whatever truly needs a person goes under "Check by hand" and ends up in the PR description.
+- **Say why it comes at this point** when Depends on does not already show it. A reviewer checks the order as well as the slices.
 - **Size it by judgment.** There is no line count. If a slice cannot be checked on its own, it is probably too small or not vertical enough.
 - **List files as paths only.** Show a signature where it is the clearest way to state intent. Never write a body. The outline is the header file.
 - **Give it a context line** that names the exact sections of `design.md` or `research.md` worth pulling, by heading. Most slices need none beyond the digest.
@@ -67,9 +68,13 @@ Each slice gets a fresh worker. Independent slices run at the same time in separ
 - **Shared state.** Two slices that write the same file, table, generated artifact or migration sequence cannot run beside each other. First try to split the target so they stop sharing it. Put them in order only when a real invariant needs it.
 - **Smallest safe cut.** If one slice is the right answer, say why.
 
+One exception to the vertical rule: a preparatory slice that changes no behaviour, such as moving a module so that later slices have a seam to cross. Allow it only when it makes a later slice smaller or safer. Its acceptance test is the existing suite, which stays green.
+
 ## 5. The outline check
 
-Write `outline.md` and tell the person it is ready. This is the one deep review before code, and the digest is part of it. Ask the person to check two things:
+Write `outline.md`. Then edit it once as a reader, against the **show-me** skill and the writing rules in `../../docs/conventions.md`. Cut what neither the person's check nor a brief would use. Where a slice's change is easier to see than to read, add the smallest view to its Change outline, in the order that explains the slice. A contract or a data shape often explains more than a file tree.
+
+Tell the person it is ready. This is the one deep review before code, and the digest is part of it. Ask the person to check two things:
 
 1. The slices and their order make sense, and each can be verified on its own.
 2. The digest states the decisions they made, and the verify commands are the ones the repo really uses.

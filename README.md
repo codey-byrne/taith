@@ -79,6 +79,7 @@ Add `.planning/` to your `.gitignore`, or to `.git/info/exclude`, if you do not 
 | `skills/research/`, `skills/how/`, `skills/why/` | Reading the code and its history |
 | `skills/design/`, `skills/architect/`, `skills/codebase-designing/` | The design conversation, the shape step and the shared design vocabulary |
 | `skills/outline/` | Slices and the decision digest |
+| `skills/show-me/` | The views that research, design and the outline draw code with. Type `/taith:show-me` to see the current topic drawn |
 | `skills/build/`, `skills/build-slice/` | The lead's build step and the worker that implements one slice |
 | `skills/principle-*/` | pstack's 24 principles, unchanged |
 | `agents/` | The `explorer`, `web-researcher` and `slice-checker` subagents |
@@ -96,7 +97,7 @@ Skills name a role and never a model. [The role sheet](skills/lead/references/ro
 taith is assembled from three bodies of work.
 
 - **[pstack](https://github.com/cursor/plugins/tree/main/pstack)** by Lauren Tan. The lead that owns the design and delegates, the principles, `how`, `why` and `architect`, and the rule that every agent starts fresh with consolidated scope.
-- **[humanlayer](https://github.com/humanlayer/humanlayer)**'s RPI workflow by Dex Horthy and the HumanLayer team. Research that describes and never recommends, the structure outline as the last check before code, vertical slices, the views used to show the shape of code, and the web researcher agent.
+- **[humanlayer/skills](https://github.com/humanlayer/skills)**, the RPI workflow by Dex Horthy and the HumanLayer team. Research that describes and never recommends, the structure outline as the last check before code, vertical slices, the `show-me` skill, and the web researcher agent.
 - **[codey-byrne/skills](https://github.com/codey-byrne/skills)**, itself adapted from HumanLayer's workflow and from [Matt Pocock's skills](https://github.com/mattpocock/skills). The research, design, structure and implement pipeline, and `codebase-designing`.
 
 [docs/conventions.md](docs/conventions.md) lists the sources of each skill.
