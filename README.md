@@ -12,7 +12,7 @@ This is the first cut of the core workflow. Read this section before you rely on
 
 - **Nothing here has been run end to end.** The skills were written from an agreed design and have not yet been used on a real task.
 - **The hc path is unverified.** `scripts/taith-worker` was written on a machine without hc. Its hc commands come from the herdr-core documentation. Without hc the script reports `BACKEND: native`, and the skills use native subagents in git worktrees. That path and the report-file wait are tested.
-- **Some skills are not in the repo yet.** The core skills point at them by name. The list is in the last section of [docs/conventions.md](docs/conventions.md).
+- **Some skills are not in the repo yet.** Core and utility skills point at them by name. The list is in the "What the core PR leaves for later PRs" section of [docs/conventions.md](docs/conventions.md).
 
 ## Install
 
@@ -81,6 +81,7 @@ Add `.planning/` to your `.gitignore`, or to `.git/info/exclude`, if you do not 
 | `skills/outline/` | Slices and the decision digest |
 | `skills/build/`, `skills/build-slice/` | The lead's build step and the worker that implements one slice |
 | `skills/principle-*/` | pstack's 24 principles, unchanged |
+| `skills/setup/`, `skills/help/` and the other utility skills | Setup, help, writing, recall, verification and statechart skills. The full list is in the "Utility skills" section of [docs/conventions.md](docs/conventions.md) |
 | `agents/` | The `explorer`, `web-researcher` and `slice-checker` subagents |
 | `scripts/taith-worker` | Starts, waits on and cleans up workers |
 | `docs/conventions.md` | The rules every skill follows. Read it before you change one |

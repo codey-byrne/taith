@@ -21,6 +21,11 @@ If the `Agent` tool rejects a model, omit `model` so the subagent runs on the se
 | review axis | `Explore` | sonnet | high | `review` lanes and its recheck |
 | comment reviewer | `taith:comment-sicko` | sonnet | medium | `review` |
 | native implementer | `general-purpose` | as the brief says | high | `build`, when hc is absent |
+| reflect reviewer | `general-purpose` | opus | high | `reflect`, one per lens |
+| reflect synthesizer | `general-purpose` | opus | high | `reflect` |
+| history miner | `Explore` | haiku | low | `recall`, `automate-me` |
+| trail reviewer | `Explore` | opus | high | `show-me-your-work`, when the cross-vendor seat is absent |
+| design walker | `general-purpose` | sonnet | high | `improve-codebase-design` |
 
 The lead, a coordinator, and design judging run on the strongest model available. That is the session model, so start the lead on it.
 

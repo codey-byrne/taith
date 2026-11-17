@@ -77,6 +77,9 @@ A skill marked "kept" in plan section 5 is copied from its source with only thes
 | `poteto-mode` | `lead` |
 | `poteto-agent` | `taith:delegate` |
 | `/setup-pstack` | `/taith:setup` |
+| a pointer to another skill by bold name only, such as "the **unslop** skill" | the same pointer with its path, "the **unslop** skill (`../unslop/SKILL.md`)". A principle's folder is `principle-<name>` |
+| a skill's slash command, such as `/statechart` | `/taith:<name>` |
+| pstack, as the name of the plugin | taith |
 | Cursor Automations, Bugbot, cloud agents | delete the step |
 
 Do not reword a kept skill for style. Its prose is the source author's.
@@ -220,17 +223,45 @@ Text copied from a source repo keeps the source author's style.
 
 ## What the core PR leaves for later PRs
 
-Core skills point at these by their agreed names. Each pointer resolves once the PR that adds the skill lands.
+Core and utility skills point at these by their agreed names. Each pointer resolves once the PR that adds the skill lands.
 
 | Item | Pointed at from |
 | --- | --- |
 | `review` | `lead`, `build`, the feature playbook |
 | `open-pr` | `lead`, `build`, both playbooks |
-| `grill`, `domain-modelling` | `design` |
-| `arena` | `architect` |
+| `grill`, `domain-modelling` | `design`, `setup`, `improve-codebase-design` |
+| `arena` | `architect`, `improve-codebase-design` through `architect` |
 | `test-first`, `comments` | `build-slice`, the quick playbook |
-| `interrogate`, `swarm`, `unslop`, `technical-writing`, `show-me-your-work`, `benchmark-checklist`, `figure-it-out` | `lead` |
+| `interrogate`, `swarm` | `lead` |
 | `own-pr`, `run-loop` and the program playbook | `lead` names the Program tier and points at `playbooks/program.md` |
 | The other playbooks | Each PR that adds a playbook also adds its line to the list in `skills/lead/SKILL.md` |
 | `delegate` agent | `lead` |
-| `setup` | the role sheet |
+| Every planned skill in its routing table | `help`, which says a skill has not shipped when its folder is missing |
+
+## Utility skills
+
+The utilities PR adds these. A kept skill is copied from cursor-pstack's `pstack/skills` with the changes in "Kept skills" above, plus the changes in the next table.
+
+| Source wording | Replace with |
+| --- | --- |
+| `.cursor/skills/`, `~/.cursor/skills/` | `.claude/skills/`, `~/.claude/skills/` |
+| the `agent-transcripts/` directory, `~/.cursor/projects/` | `${CLAUDE_CONFIG_DIR:-$HOME/.claude}/projects/<slug>/`, where `<slug>` is the workspace path with every character other than a letter or digit turned into "-" |
+| Cursor's built-in `create-skill` | Anthropic's `skill-creator` plugin from the `claude-plugins-official` marketplace, `/skill-creator:skill-creator` |
+| "pick each subagent's reasoning level and fast or standard speed" | the role sheet |
+| `Shell` (the tool) | `Bash` |
+
+| Skill | Kind | Sources and changes |
+| --- | --- | --- |
+| `unslop`, `technical-writing`, `sharpen`, `bro`, `in-your-own-words`, `benchmark-checklist`, `correct`, `teach` | kept | pstack. Only skill pointers and slash commands changed |
+| `figure-it-out`, `recall`, `automate-me` | kept | pstack, with the wording changes above |
+| `show-me-your-work` | kept | pstack. The cross-model reviewer is the `vendor-reviewer` role, with the `trail reviewer` role as the fallback (decision 18) |
+| `statechart`, `create-formal-verification-skill`, `maintain-formal-verification-skill`, `create-verification-skill`, `maintain-verification-skill` | kept | pstack, with the wording changes above. `statechart/scripts` is unchanged, tests included |
+| `catchup` | adapted | pstack `ketchup`. Draws nothing and uses text sketches where the source drew, until its visuals are decided (decision 16) |
+| `reflect` | adapted | pstack. Also reads the transcripts of the workers named in `.planning/<feature>/runs/`, native or hc. Its three lenses share the `reflect reviewer` role, because native subagents are one model family and pstack's cheaper tooling model has no counterpart |
+| `setup` | hybrid | pstack `setup-pstack` for the roles and its budget step, which sets every role to one effort level, plus a `sheet` option that keeps the sheet's efforts (decision 30). Panel roles, where one role lists several models, come with `arena` and `interrogate`. Codey's `initialise-docs` for the per-repo part with its scan removed (decision 17). When neither `CLAUDE.md` nor `AGENTS.md` exists it creates `CLAUDE.md` without asking, since taith runs only in Claude Code |
+| `help` | adapted | pstack `poteto-help`, rewritten for taith. It does not offer to run setup, because every role works from the sheet without it |
+| `improve-codebase-design` | adapted | Codey's. Step 3 runs `architect` and the decision questions in place of its own design-it-twice |
+
+Nothing in this PR comes from `riptide-skills` or from the `pstack-claude` port.
+
+`ketchup-video` and `typescript-best-practices` are not shipped.
