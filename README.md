@@ -80,8 +80,10 @@ Add `.planning/` to your `.gitignore`, or to `.git/info/exclude`, if you do not 
 | `skills/design/`, `skills/architect/`, `skills/codebase-designing/` | The design conversation, the shape step and the shared design vocabulary |
 | `skills/outline/` | Slices and the decision digest |
 | `skills/build/`, `skills/build-slice/` | The lead's build step and the worker that implements one slice |
+| `skills/open-pr/` | Opens the PR, with a description that shows the shape of the change |
+| `skills/own-pr/`, `skills/run-loop/` | The workers that own one PR of a program and that run one long loop |
 | `skills/principle-*/` | pstack's 24 principles, unchanged |
-| `agents/` | The `explorer`, `web-researcher` and `slice-checker` subagents |
+| `agents/` | The `explorer`, `web-researcher`, `slice-checker` and `delegate` subagents |
 | `scripts/taith-worker` | Starts, waits on and cleans up workers |
 | `docs/conventions.md` | The rules every skill follows. Read it before you change one |
 
