@@ -234,3 +234,31 @@ Core skills point at these by their agreed names. Each pointer resolves once the
 | The other playbooks | Each PR that adds a playbook also adds its line to the list in `skills/lead/SKILL.md` |
 | `delegate` agent | `lead` |
 | `setup` | the role sheet |
+
+## Utility skills
+
+The utilities PR adds these. A kept skill is copied from cursor-pstack's `pstack/skills` with the changes in "Kept skills" above, plus the changes in the next table.
+
+| Source wording | Replace with |
+| --- | --- |
+| `.cursor/skills/`, `~/.cursor/skills/` | `.claude/skills/`, `~/.claude/skills/` |
+| the `agent-transcripts/` directory, `~/.cursor/projects/` | `${CLAUDE_CONFIG_DIR:-$HOME/.claude}/projects/<slug>/`, where `<slug>` is the workspace path with every character other than a letter or digit turned into "-" |
+| Cursor's built-in `create-skill` | Anthropic's `skill-creator` plugin, `/skill-creator:skill-creator` |
+| "pick each subagent's reasoning level and fast or standard speed" | the role sheet |
+| `Shell` (the tool) | `Bash` |
+
+| Skill | Kind | Sources and changes |
+| --- | --- | --- |
+| `unslop`, `technical-writing`, `sharpen`, `bro`, `in-your-own-words`, `benchmark-checklist`, `correct`, `teach` | kept | pstack, unchanged |
+| `figure-it-out`, `recall`, `automate-me` | kept | pstack, with the wording changes above |
+| `show-me-your-work` | kept | pstack. The cross-model reviewer is the `vendor-reviewer` role, with the `trail reviewer` role as the fallback (decision 13) |
+| `statechart`, `create-formal-verification-skill`, `maintain-formal-verification-skill`, `create-verification-skill`, `maintain-verification-skill` | kept | pstack. `statechart/scripts` is unchanged, tests included |
+| `catchup` | adapted | pstack `ketchup`. Draws nothing and uses text sketches until its visuals are decided (decision 11) |
+| `reflect` | adapted | pstack. Also reads the transcripts of the hc workers named in `.planning/<feature>/runs/` |
+| `setup` | hybrid | pstack `setup-pstack` for the roles, Codey's `initialise-docs` for the per-repo part with its scan removed (decision 12) |
+| `help` | adapted | pstack `poteto-help`, rewritten for taith |
+| `improve-codebase-design` | adapted | Codey's. Step 3 runs `architect` and the decision questions in place of its own design-it-twice |
+
+Nothing in this PR comes from `riptide-skills` or from the `pstack-claude` port.
+
+`ketchup-video` and `typescript-best-practices` are not shipped.
